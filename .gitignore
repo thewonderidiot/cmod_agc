@@ -1,0 +1,6 @@
+__pycache__
+gui/cores/*
+gui/roms/*
+gui/pads/*
+gui/traces/*
+fpga/cmod_agc/*

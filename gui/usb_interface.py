@@ -10,7 +10,7 @@ import usb_msg as um
 
 POLL_PERIOD_MS = 5
 
-class USBWorker(QObject):
+class USBInterface(QObject):
     msg_received = Signal(object)
     connected = Signal(bool)
 
@@ -28,17 +28,15 @@ class USBWorker(QObject):
         self._timer.timeout.connect(self._service)
         self._timer.start(POLL_PERIOD_MS)
 
-    # def __del__(self):
-    #     if self._dev:
-    #         self._dev.flush()
-    #         self._dev.close()
-
-    def send_msg(self, msg):
+    def send(self, msg):
         self._tx_queue.put(msg)
 
     def poll(self, msg):
         if msg not in self._poll_msgs:
             self._poll_msgs.append(msg)
+
+    def listen(self, listener):
+        self.msg_received.connect(listener.handle_msg)
 
     def _enqueue_poll_msgs(self):
         for msg in self._poll_msgs:
@@ -96,45 +94,20 @@ class USBWorker(QObject):
             if not self._dev.open(QIODevice.ReadWrite):
                 raise RuntimeError('Failed to open %s' % info.name())
 
+            self._dev.errorOccurred.connect(self._error)
+
             # Mark ourselves connected
             self.connected.emit(True)
 
         except:
             pass
 
+    def _error(self, error):
+        self._disconnect()
+
     def _disconnect(self):
+        self._dev.close()
+        # self._dev.setParent(None)
+        # self._dev.deleteLater()
         self.connected.emit(False)
         self._dev = None
-
-
-class USBInterface(QObject):
-    connected = Signal(bool)
-    msg_sent = Signal(object)
-
-    def __init__(self):
-        QObject.__init__(self)
-
-        #self._thread = QThread()
-        self._worker = USBWorker()
-        #self._worker.moveToThread(self._thread)
-        #self._thread.finished.connect(self._worker.deleteLater)
-        self._worker.connected.connect(self.connected)
-        self.msg_sent.connect(self._worker.send_msg)
-
-    def start(self):
-        #self._thread.start()
-        pass
-
-    def close(self):
-        pass
-        # self._thread.quit()
-        # self._thread.wait()
-
-    def poll(self, msg):
-        self._worker.poll(msg)
-
-    def send(self, msg):
-        self.msg_sent.emit(msg)
-
-    def listen(self, listener):
-        self._worker.msg_received.connect(listener.handle_msg)

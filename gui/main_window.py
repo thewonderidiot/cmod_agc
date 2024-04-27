@@ -19,9 +19,6 @@ class MainWindow(QMainWindow):
         self._setup_ui()
         self._dsky = DSKY(self, self._usbif)
 
-        # Kick off the UI thread and try to connect to the device
-        self._usbif.start()
-
     def _setup_ui(self):
         # Create a status bar widget to display connection state
         # FIXME: Replace with an indicator?
@@ -51,6 +48,3 @@ class MainWindow(QMainWindow):
             message = 'Device not found.'
 
         self._status.setText(message)
-        
-    def closeEvent(self, event):
-        self._usbif.close()

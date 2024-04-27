@@ -1,4 +1,4 @@
-from PySide6.QtGui import QValidator
+from qtpy.QtGui import QValidator
 
 class RegValidator(QValidator):
     def __init__(self, max_value):

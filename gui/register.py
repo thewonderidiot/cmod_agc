@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QWidget, QFrame, QHBoxLayout, QLineEdit, QLabel
-from PySide6.QtGui import QFont, QColor
-from PySide6.QtCore import Qt
+from qtpy.QtWidgets import QWidget, QFrame, QHBoxLayout, QLineEdit, QLabel
+from qtpy.QtGui import QFont, QColor
+from qtpy.QtCore import Qt
 from indicator import Indicator
 import usb_msg as um
 

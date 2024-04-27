@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QRadioButton
-from PySide6.QtGui import QFont
-from PySide6.QtCore import Qt
+from qtpy.QtWidgets import QWidget, QVBoxLayout, QLabel, QRadioButton
+from qtpy.QtGui import QFont
+from qtpy.QtCore import Qt
 import usb_msg as um
 
 class BankS(QWidget):

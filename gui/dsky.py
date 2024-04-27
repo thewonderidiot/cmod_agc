@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QWidget, QStyleOption, QStyle, QPushButton
-from PySide6.QtGui import QPainter, QPixmap
-from PySide6.QtCore import Qt, QTimer
+from qtpy.QtWidgets import QWidget, QStyleOption, QStyle, QPushButton
+from qtpy.QtGui import QPainter, QPixmap
+from qtpy.QtCore import Qt, QTimer
 
 from lamp import Lamp
 from seven_segment import SevenSegment

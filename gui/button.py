@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QPushButton
-from PySide6.QtCore import Qt
+from qtpy.QtWidgets import QPushButton
+from qtpy.QtCore import Qt
 
 class Button(QPushButton):
     def __init__(self, parent):

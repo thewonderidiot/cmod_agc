@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QWidget
-from PySide6.QtGui import QPainter
+from qtpy.QtWidgets import QWidget
+from qtpy.QtGui import QPainter
 
 class SevenSegment(QWidget):
     def __init__(self, parent, el_pix):

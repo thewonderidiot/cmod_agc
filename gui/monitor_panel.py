@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget, QLabel
-from PySide6.QtGui import QColor
-from PySide6.QtCore import Qt
+from qtpy.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget, QLabel
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Qt
 from write_w import WriteW
 from register import Register
 from address_register import AddressRegister

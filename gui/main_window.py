@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QLabel, QWidget
+from qtpy.QtWidgets import QMainWindow, QHBoxLayout, QLabel, QWidget
 from monitor_panel import MonitorPanel
 from alarm_mem_panel import AlarmMemPanel
 from usb_interface import USBInterface

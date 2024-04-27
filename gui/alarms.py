@@ -1,7 +1,7 @@
-from PySide6.QtWidgets import QWidget, QFrame, QGridLayout, \
+from qtpy.QtWidgets import QWidget, QFrame, QGridLayout, \
                               QLabel, QPushButton, QCheckBox
-from PySide6.QtGui import QFont, QColor
-from PySide6.QtCore import Qt
+from qtpy.QtGui import QFont, QColor
+from qtpy.QtCore import Qt
 from collections import OrderedDict
 from indicator import Indicator
 import usb_msg as um

@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QWidget
-from PySide6.QtCore import Qt
+from qtpy.QtWidgets import QFrame, QVBoxLayout, QWidget
+from qtpy.QtCore import Qt
 from core_rope_sim import CoreRopeSim
 from erasable_mem_sim import ErasableMemSim
 from measurements import Measurements

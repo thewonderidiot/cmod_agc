@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QWidget
-from PySide6.QtGui import QPainter, QColor, QRadialGradient
-from PySide6.QtCore import QPointF
+from qtpy.QtWidgets import QWidget
+from qtpy.QtGui import QPainter, QColor, QRadialGradient
+from qtpy.QtCore import QPointF
 
 class Indicator(QWidget):
     def __init__(self, parent, color):

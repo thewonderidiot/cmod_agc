@@ -2,8 +2,8 @@ import warnings
 import queue
 import time
 from ctypes import *
-from PySide6.QtCore import QObject, QIODevice, QThread, QTimer, Qt, Signal
-from PySide6.QtSerialPort import QSerialPort, QSerialPortInfo
+from qtpy.QtCore import QObject, QIODevice, QThread, QTimer, Qt, Signal
+from qtpy.QtSerialPort import QSerialPort, QSerialPortInfo
 
 from slip import slip, unslip, unslip_from
 import usb_msg as um

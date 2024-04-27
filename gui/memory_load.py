@@ -1,4 +1,4 @@
-from PySide6.QtCore import QObject, QTimer, Signal, Qt
+from qtpy.QtCore import QObject, QTimer, Signal, Qt
 import array
 import os
 import agc

@@ -1,7 +1,7 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QHeaderView, \
+from qtpy.QtWidgets import QFrame, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QHeaderView, \
                               QWidget, QPushButton, QGridLayout, QSpacerItem, QFileDialog
-from PySide6.QtGui import QFont
-from PySide6.QtCore import Qt
+from qtpy.QtGui import QFont
+from qtpy.QtCore import Qt
 import usb_msg as um
 import agc
 import time

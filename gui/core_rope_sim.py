@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QFrame, QGridLayout, QLabel, QCheckBox, QPushButton, QRadioButton, QFileDialog
-from PySide6.QtGui import QFont
-from PySide6.QtCore import Qt
+from qtpy.QtWidgets import QFrame, QGridLayout, QLabel, QCheckBox, QPushButton, QRadioButton, QFileDialog
+from qtpy.QtGui import QFont
+from qtpy.QtCore import Qt
 from memory_load import MemoryLoad
 from memory_dump import MemoryDump
 import usb_msg as um

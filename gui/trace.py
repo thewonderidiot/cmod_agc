@@ -6,7 +6,6 @@ import usb_msg as um
 import agc
 import time
 
-# TRACE_DEPTH = 16384
 TRACE_DEPTH = 2048
 
 class Trace(QFrame):

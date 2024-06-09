@@ -22,7 +22,6 @@ class USBInterface(QObject):
         self._poll_msgs = []
         self._tx_queue = queue.Queue()
         self._rx_bytes = b''
-        self._poll_ctr = 0
 
         self._timer = QTimer(None)
         self._timer.timeout.connect(self._service)
@@ -103,6 +102,7 @@ class USBInterface(QObject):
             pass
 
     def _error(self, error):
+        print(error)
         self._disconnect()
 
     def _disconnect(self):

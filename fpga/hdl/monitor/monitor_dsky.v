@@ -213,9 +213,31 @@ always @(posedge clk or negedge rst_n) begin
     end
 end
 
+reg mainkey_cycle;
+reg navkey_cycle;
+
 assign mdt_pro = (proceed & rxor_32 & mt[9]) ? 16'o20000 : 16'o0;
-assign mdt_mainkey = (mrchg & (ch == 9'o15)) ? {11'b0, main_keycode} : 16'o0;
-assign mdt_navkey = (mrchg & (ch == 9'o16)) ? {9'b0, nav_keycode} : 16'o0;
+assign mdt_mainkey = (mrchg & mainkey_cycle) ? {11'b0, main_keycode} : 16'o0;
+assign mdt_navkey = (mrchg & navkey_cycle) ? {9'b0, nav_keycode} : 16'o0;
+
+always @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
+        mainkey_cycle <= 1'b0;
+        navkey_cycle <= 1'b0;
+    end else begin
+        if (mrchg & (ch == 9'o15)) begin
+            mainkey_cycle <= 1'b1;
+        end else if (mt[11]) begin
+            mainkey_cycle <= 1'b0;
+        end
+
+        if (mrchg & (ch == 9'o16)) begin
+            navkey_cycle <= 1'b1;
+        end else if (mt[11]) begin
+            navkey_cycle <= 1'b0;
+        end
+    end
+end
 
 always @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
@@ -229,6 +251,12 @@ always @(posedge clk or negedge rst_n) begin
         keyrupt2 <= 1'b0;
         if (rxor_32 & mt[11]) begin
             proceed <= 1'b0;
+        end
+        if (mainkey_cycle & (mt[10])) begin
+            main_keycode <= 5'b0;
+        end
+        if (navkey_cycle & (mt[10])) begin
+            nav_keycode <= 7'b0;
         end
         if (write_en) begin
             case (addr)

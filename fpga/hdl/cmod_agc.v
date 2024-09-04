@@ -38,6 +38,8 @@ module cmod_agc(
     input wire mkey4_in,
     input wire mkey5_in,
     input wire sbybut_in,
+    input wire upl0_in,
+    input wire upl1_in,
 
     output wire COMACT,
     output wire ELSNCM,
@@ -451,8 +453,8 @@ wire TRNP; //input
 reg TRST10 = 0; //input
 reg TRST9 = 0; //input
 reg ULLTHR = 0; //input
-reg UPL0 = 0; //input
-reg UPL1 = 0; //input
+wire UPL0; //input
+wire UPL1; //input
 reg VFAIL = 0;
 reg XLNK0 = 0; //input
 reg XLNK1 = 0; //input
@@ -522,6 +524,8 @@ debounce #(1, 10) db4(prop_clk, rst_n, mkey3_in, MKEY3);
 debounce #(1, 10) db5(prop_clk, rst_n, mkey4_in, MKEY4);
 debounce #(1, 10) db6(prop_clk, rst_n, mkey5_in, MKEY5);
 debounce #(1, 10) db7(prop_clk, rst_n, sbybut_in, SBYBUT);
+debounce #(1, 10) db8(prop_clk, rst_n, upl0_in, UPL0);
+debounce #(1, 10) db9(prop_clk, rst_n, upl1_in, UPL1);
 
 assign IN3214 = SBYBUT;
 

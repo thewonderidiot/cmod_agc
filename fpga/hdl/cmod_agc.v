@@ -35,49 +35,54 @@ module cmod_agc(
     input wire a16_p,
     input wire a16_n,
 
-    input wire caurst_in,
-    input wire mainrs_in,
-    input wire mkey1_in,
-    input wire mkey2_in,
-    input wire mkey3_in,
-    input wire mkey4_in,
-    input wire mkey5_in,
-    input wire sbybut_in,
+    output wire n25KPPS,
+    output wire n3200A,
+    output wire n3200B,
+    output wire n800RST,
+    output wire n800SET,
+    output wire CDUCLK,
 
+    input wire cduxm_in,
+    input wire cduxp_in,
+    input wire cduym_in,
+    input wire cduyp_in,
+    input wire cduzm_in,
+    input wire cduzp_in,
+    input wire shaftm_in,
+    input wire shaftp_in,
     input wire trnm_in,
     input wire trnp_in,
 
-    output wire COMACT,
-    output wire ELSNCM,
-    output wire KYRLS,
-    output wire OPEROR,
-    output wire RESTRT,
-    output wire RLYB01,
-    output wire RLYB02,
-    output wire RLYB03,
-    output wire RLYB04,
-    output wire RLYB05,
-    output wire RLYB06,
-    output wire RLYB07,
-    output wire RLYB08,
-    output wire RLYB09,
-    output wire RLYB10,
-    output wire RLYB11,
-    output wire RYWD12,
-    output wire RYWD13,
-    output wire RYWD14,
-    output wire RYWD16,
-    output wire SBYLIT,
-    output wire TMPCAU,
-    output wire UPLACT,
-    output wire VNFLSH,
-
-    output wire CDUCLK,
+    output wire CDUXDM,
+    output wire CDUXDP,
+    output wire CDUYDM,
+    output wire CDUYDP,
+    output wire CDUZDM,
+    output wire CDUZDP,
+    output wire SHFTDM,
+    output wire SHFTDP,
     output wire TRNDM,
     output wire TRNDP,
+
+    input wire cdufal_in,
+    input wire opcdfl_in,
+    input wire gcapcl_in,
+    input wire ctlsat_in,
+    input wire imuopr_in,
+    input wire imufal_in,
+    input wire imucag_in,
+    input wire tempin_in,
+    input wire isstor_in,
+
+
+    output wire COARSE,
+    output wire ENERIM,
     output wire ENEROP,
+    output wire ZIMCDU,
     output wire ZOPCDU,
-    output wire TVCNAB
+    output wire TVCNAB,
+    output wire S4BTAK,
+    output wire ISSTDC
 );
 
 wire rst_n;
@@ -364,14 +369,14 @@ reg BMGYP = 0; //input
 reg BMGZM = 0; //input
 reg BMGZP = 0; //input
 wire CAURST; //input
-reg CDUFAL = 0; //input
-reg CDUXM = 0; //input
-reg CDUXP = 0; //input
-reg CDUYM = 0; //input
-reg CDUYP = 0; //input
-reg CDUZM = 0; //input
-reg CDUZP = 0; //input
-reg CTLSAT = 0; //input
+wire CDUFAL; //input
+wire CDUXM; //input
+wire CDUXP; //input
+wire CDUYM; //input
+wire CDUYP; //input
+wire CDUZM; //input
+wire CDUZP; //input
+wire CTLSAT; //input
 wire DKBSNC; //input
 wire DKEND; //input
 wire DKSTRT; //input
@@ -380,19 +385,19 @@ reg FREFUN = 0; //input
 reg GATEX_n = 1; //input
 reg GATEY_n = 1; //input
 reg GATEZ_n = 1; //input
-reg GCAPCL = 0; //input
+wire GCAPCL; //input
 reg GUIREL = 0; //input
 reg HOLFUN = 0; //input
-reg IMUCAG = 0; //input
-reg IMUFAL = 0; //input
-reg IMUOPR = 1; //input
+wire IMUCAG; //input
+wire IMUFAL; //input
+wire IMUOPR; //input
 reg IN3008 = 0; //input
 reg IN3212 = 0; //input
 reg IN3213 = 0; //input
 wire IN3214; //input
 reg IN3216 = 0; //input
 reg IN3301 = 0; //input
-reg ISSTOR = 0; //input
+wire ISSTOR; //input
 reg LEMATT = 0; //input
 reg LFTOFF = 0; //input
 reg LRIN0 = 0; //input
@@ -428,7 +433,7 @@ reg NKEY2 = 0; //input
 reg NKEY3 = 0; //input
 reg NKEY4 = 0; //input
 reg NKEY5 = 0; //input
-reg OPCDFL = 0; //input
+wire OPCDFL; //input
 reg OPMSW2 = 0; //input
 reg OPMSW3 = 0; //input
 reg PCHGOF = 0; //input
@@ -454,7 +459,7 @@ reg SIGNZ = 0; //input
 reg SMSEPR = 0; //input
 reg SPSRDY = 0; //input
 reg STRPRS = 0; //input
-reg TEMPIN = 1; //input
+wire TEMPIN; //input
 reg TRANmX = 0; //input
 reg TRANmY = 0; //input
 reg TRANmZ = 0; //input
@@ -473,20 +478,37 @@ reg XLNK0 = 0; //input
 reg XLNK1 = 0; //input
 reg ZEROP = 0; //input
 reg n2FSFAL = 1;
-wire CDUXDP; //output
-wire CDUXDM; //output
-wire CDUYDP; //output
-wire CDUYDM; //output
-wire CDUZDP; //output
-wire CDUZDM; //output
 wire CLK; //output
+wire COMACT; //output
 wire DKDATA; //output
+wire ELSNCM; //output
 wire ELSNCN; //output
+wire KYRLS; //output
+wire OPEROR; //output
 wire PIPASW; //output
 wire PIPDAT; //output
+wire RESTRT; //output
+wire RLYB01; //output
+wire RLYB02; //output
+wire RLYB03; //output
+wire RLYB04; //output
+wire RLYB05; //output
+wire RLYB06; //output
+wire RLYB07; //output
+wire RLYB08; //output
+wire RLYB09; //output
+wire RLYB10; //output
+wire RLYB11; //output
+wire RYWD12; //output
+wire RYWD13; //output
+wire RYWD14; //output
+wire RYWD16; //output
+wire SBYLIT; //output
 wire SBYREL_n;
-wire SHFTDM;
-wire SHFTDP;
+wire TMPCAU; //output
+wire UPLACT; //output
+wire VNFLSH; //output
+
 
 // B8 CLOCK output
 wire CLOCK;
@@ -560,21 +582,30 @@ always @(posedge CLOCK or negedge rst_n) begin
     end
 end
 
-debounce #(1, 10) db0(prop_clk, rst_n, caurst_in, CAURST);
-debounce #(1, 10) db1(prop_clk, rst_n, mainrs_in, MAINRS);
-debounce #(1, 10) db2(prop_clk, rst_n, mkey1_in, MKEY1);
-debounce #(1, 10) db3(prop_clk, rst_n, mkey2_in, MKEY2);
-debounce #(1, 10) db4(prop_clk, rst_n, mkey3_in, MKEY3);
-debounce #(1, 10) db5(prop_clk, rst_n, mkey4_in, MKEY4);
-debounce #(1, 10) db6(prop_clk, rst_n, mkey5_in, MKEY5);
-debounce #(1, 10) db7(prop_clk, rst_n, sbybut_in, SBYBUT);
-debounce #(1, 10) db8(prop_clk, rst_n, trnm_in, TRNM);
-debounce #(1, 10) db9(prop_clk, rst_n, trnp_in, TRNP);
+debounce #(1, 10) db1(prop_clk, rst_n, cduxm_in, CDUXM);
+debounce #(1, 10) db2(prop_clk, rst_n, cduxp_in, CDUXP);
+debounce #(1, 10) db3(prop_clk, rst_n, cduym_in, CDUYM);
+debounce #(1, 10) db4(prop_clk, rst_n, cduyp_in, CDUYP);
+debounce #(1, 10) db5(prop_clk, rst_n, cduzm_in, CDUZM);
+debounce #(1, 10) db6(prop_clk, rst_n, cduzp_in, CDUZP);
+debounce #(1, 10) db7(prop_clk, rst_n, shaftm_in, SHAFTM);
+debounce #(1, 10) db8(prop_clk, rst_n, shaftp_in, SHAFTP);
+debounce #(1, 10) db9(prop_clk, rst_n, trnm_in, TRNM);
+debounce #(1, 10) db10(prop_clk, rst_n, trnp_in, TRNP);
+debounce #(1, 10) db11(prop_clk, rst_n, cdufal_in, CDUFAL);
+debounce #(1, 10) db12(prop_clk, rst_n, opcdfl_in, OPCDFL);
+debounce #(1, 10) db13(prop_clk, rst_n, gcapcl_in, GCAPCL);
+debounce #(1, 10) db14(prop_clk, rst_n, ctlsat_in, CTLSAT);
+debounce #(1, 10) db15(prop_clk, rst_n, imuopr_in, IMUOPR);
+debounce #(1, 10) db16(prop_clk, rst_n, imufal_in, IMUFAL);
+debounce #(1, 10) db17(prop_clk, rst_n, imucag_in, IMUCAG);
+debounce #(1, 10) db18(prop_clk, rst_n, tempin_in, TEMPIN);
+debounce #(1, 10) db19(prop_clk, rst_n, isstor_in, ISSTOR);
 
 assign IN3214 = SBYBUT;
 
 // AGC
-fpga_agc agc(p4VDC, p4VSW, GND, ~rst_n, prop_clk, BLKUPL_n, BMGXM, BMGXP, BMGYM, BMGYP, BMGZM, BMGZP, CAURST, CDUFAL, CDUXM, CDUXP, CDUYM, CDUYP, CDUZM, CDUZP, CLOCK, CTLSAT, DBLTST, DKBSNC, DKEND, DKSTRT, DOSCAL, FLTOUT, FREFUN, GATEX_n, GATEY_n, GATEZ_n, GCAPCL, GUIREL, HOLFUN, IMUCAG, IMUFAL, IMUOPR, IN3008, IN3212, IN3213, IN3214, IN3216, IN3301, ISSTOR, LEMATT, LFTOFF, LRIN0, LRIN1, LRRLSC, LVDAGD, MAINRS, MAMU, MANmP, MANmR, MANmY, MANpP, MANpR, MANpY, MARK, MDT01, MDT02, MDT03, MDT04, MDT05, MDT06, MDT07, MDT08, MDT09, MDT10, MDT11, MDT12, MDT13, MDT14, MDT15, MDT16, MKEY1, MKEY2, MKEY3, MKEY4, MKEY5, MLDCH, MLOAD, MNHNC, MNHRPT, MNHSBF, MNIMmP, MNIMmR, MNIMmY, MNIMpP, MNIMpR, MNIMpY, MONPAR, MONWBK, MRDCH, MREAD, MRKREJ, MRKRST, MSTP, MSTRT, MTCSAI, MYCLMP, NAVRST, NHALGA, NHVFAL, NKEY1, NKEY2, NKEY3, NKEY4, NKEY5, OPCDFL, OPMSW2, OPMSW3, PCHGOF, PIPAXm, PIPAXp, PIPAYm, PIPAYp, PIPAZm, PIPAZp, ROLGOF, RRIN0, RRIN1, RRPONA, RRRLSC, S4BSAB, SBYBUT, SCAFAL, SHAFTM, SHAFTP, SIGNX, SIGNY, SIGNZ, SMSEPR, SPSRDY, STRPRS, STRT2, TEMPIN, TRANmX, TRANmY, TRANmZ, TRANpX, TRANpY, TRANpZ, TRNM, TRNP, TRST10, TRST9, ULLTHR, UPL0, UPL1, VFAIL, XLNK0, XLNK1, ZEROP, n2FSFAL, CDUCLK, CDUXDM, CDUXDP, CDUYDM, CDUYDP, CDUZDM, CDUZDP, CLK, COMACT, DKDATA, ELSNCM, ELSNCN, ENEROP, KYRLS, MBR1, MBR2, MCTRAL_n, MGOJAM, MGP_n, MIIP, MINHL, MINKL, MNISQ, MON800, MONWT, MOSCAL_n, MPAL_n, MPIPAL_n, MRAG, MRCH, MREQIN, MRGG, MRLG, MRPTAL_n, MRSC, MRULOG, MSCAFL_n, MSCDBL_n, MSP, MSQ10, MSQ11, MSQ12, MSQ13, MSQ14, MSQ16, MSQEXT, MST1, MST2, MST3, MSTPIT_n, MT01, MT02, MT03, MT04, MT05, MT06, MT07, MT08, MT09, MT10, MT11, MT12, MTCAL_n, MTCSA_n, MVFAIL_n, MWAG, MWARNF_n, MWATCH_n, MWBBEG, MWBG, MWCH, MWEBG, MWFBG, MWG, MWL01, MWL02, MWL03, MWL04, MWL05, MWL06, MWL07, MWL08, MWL09, MWL10, MWL11, MWL12, MWL13, MWL14, MWL15, MWL16, MWLG, MWQG, MWSG, MWYG, MWZG, OPEROR, OUTCOM, PIPASW, PIPDAT, RESTRT, RLYB01, RLYB02, RLYB03, RLYB04, RLYB05, RLYB06, RLYB07, RLYB08, RLYB09, RLYB10, RLYB11, RYWD12, RYWD13, RYWD14, RYWD16, SBYLIT, SBYREL_n, TMPCAU, TRNDM, TRNDP, TVCNAB, UPLACT, VNFLSH, ZOPCDU);
+fpga_agc agc(p4VDC, p4VSW, GND, ~rst_n, prop_clk, BLKUPL_n, BMGXM, BMGXP, BMGYM, BMGYP, BMGZM, BMGZP, CAURST, CDUFAL, CDUXM, CDUXP, CDUYM, CDUYP, CDUZM, CDUZP, CLOCK, CTLSAT, DBLTST, DKBSNC, DKEND, DKSTRT, DOSCAL, FLTOUT, FREFUN, GATEX_n, GATEY_n, GATEZ_n, GCAPCL, GUIREL, HOLFUN, IMUCAG, IMUFAL, IMUOPR, IN3008, IN3212, IN3213, IN3214, IN3216, IN3301, ISSTOR, LEMATT, LFTOFF, LRIN0, LRIN1, LRRLSC, LVDAGD, MAINRS, MAMU, MANmP, MANmR, MANmY, MANpP, MANpR, MANpY, MARK, MDT01, MDT02, MDT03, MDT04, MDT05, MDT06, MDT07, MDT08, MDT09, MDT10, MDT11, MDT12, MDT13, MDT14, MDT15, MDT16, MKEY1, MKEY2, MKEY3, MKEY4, MKEY5, MLDCH, MLOAD, MNHNC, MNHRPT, MNHSBF, MNIMmP, MNIMmR, MNIMmY, MNIMpP, MNIMpR, MNIMpY, MONPAR, MONWBK, MRDCH, MREAD, MRKREJ, MRKRST, MSTP, MSTRT, MTCSAI, MYCLMP, NAVRST, NHALGA, NHVFAL, NKEY1, NKEY2, NKEY3, NKEY4, NKEY5, OPCDFL, OPMSW2, OPMSW3, PCHGOF, PIPAXm, PIPAXp, PIPAYm, PIPAYp, PIPAZm, PIPAZp, ROLGOF, RRIN0, RRIN1, RRPONA, RRRLSC, S4BSAB, SBYBUT, SCAFAL, SHAFTM, SHAFTP, SIGNX, SIGNY, SIGNZ, SMSEPR, SPSRDY, STRPRS, STRT2, TEMPIN, TRANmX, TRANmY, TRANmZ, TRANpX, TRANpY, TRANpZ, TRNM, TRNP, TRST10, TRST9, ULLTHR, UPL0, UPL1, VFAIL, XLNK0, XLNK1, ZEROP, n2FSFAL, n25KPPS, n3200A, n3200B, n800RST, n800SET, CDUCLK, CDUXDM, CDUXDP, CDUYDM, CDUYDP, CDUZDM, CDUZDP, CLK, COARSE, COMACT, DKDATA, ELSNCM, ELSNCN, ENERIM, ENEROP, ISSTDC, KYRLS, MBR1, MBR2, MCTRAL_n, MGOJAM, MGP_n, MIIP, MINHL, MINKL, MNISQ, MON800, MONWT, MOSCAL_n, MPAL_n, MPIPAL_n, MRAG, MRCH, MREQIN, MRGG, MRLG, MRPTAL_n, MRSC, MRULOG, MSCAFL_n, MSCDBL_n, MSP, MSQ10, MSQ11, MSQ12, MSQ13, MSQ14, MSQ16, MSQEXT, MST1, MST2, MST3, MSTPIT_n, MT01, MT02, MT03, MT04, MT05, MT06, MT07, MT08, MT09, MT10, MT11, MT12, MTCAL_n, MTCSA_n, MVFAIL_n, MWAG, MWARNF_n, MWATCH_n, MWBBEG, MWBG, MWCH, MWEBG, MWFBG, MWG, MWL01, MWL02, MWL03, MWL04, MWL05, MWL06, MWL07, MWL08, MWL09, MWL10, MWL11, MWL12, MWL13, MWL14, MWL15, MWL16, MWLG, MWQG, MWSG, MWYG, MWZG, OPEROR, OUTCOM, PIPASW, PIPDAT, RESTRT, RLYB01, RLYB02, RLYB03, RLYB04, RLYB05, RLYB06, RLYB07, RLYB08, RLYB09, RLYB10, RLYB11, RYWD12, RYWD13, RYWD14, RYWD16, S4BTAK, SBYLIT, SBYREL_n, SHFTDM, SHFTDP, TMPCAU, TRNDM, TRNDP, TVCNAB, UPLACT, VNFLSH, ZIMCDU, ZOPCDU);
 
 
 assign led0 = COMACT;

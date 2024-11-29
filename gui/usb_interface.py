@@ -98,8 +98,8 @@ class USBInterface(QObject):
             # Mark ourselves connected
             self.connected.emit(True)
 
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     def _error(self, error):
         print(error)

@@ -79,7 +79,7 @@ class USBInterface(QObject):
         try:
             dev_info = None
             for info in QSerialPortInfo.availablePorts():
-                if ((info.manufacturer() == 'Digilent') and
+                if ((info.manufacturer() in ('Digilent', 'FTDI')) and
                     (info.hasVendorIdentifier() and info.vendorIdentifier() == 0x0403) and
                     (info.hasProductIdentifier() and info.productIdentifier() == 0x6010)):
                     dev_info = info
@@ -98,8 +98,8 @@ class USBInterface(QObject):
             # Mark ourselves connected
             self.connected.emit(True)
 
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     def _error(self, error):
         print(error)

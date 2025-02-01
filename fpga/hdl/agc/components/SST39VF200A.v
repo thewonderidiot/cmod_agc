@@ -81,13 +81,11 @@ module SST39VF200A(A15, A14, A13, A12, A11, A10, A9, A8, NC1, NC2, WE_n, NC3, NC
     assign addr = {A15, A14, A13, A12, A11, A10, A9, A8, A7, A6, A5, A4, A3, A2, A1, A0};
 
     wire [15:0] sensed_word;
-    wire [15:0] filtered_word;
-    assign filtered_word = (addr >= 16'h4800) ? 16'b0 : sensed_word;
-    assign data = OE_n ? 16'b0 : filtered_word;
+    assign data = OE_n ? 16'b0 : sensed_word;
 
     rope_memory rope(
         .clka(SIM_CLK),
-        .addra(addr[14:0]),
+        .addra(addr),
         .douta(sensed_word)
     );
 endmodule

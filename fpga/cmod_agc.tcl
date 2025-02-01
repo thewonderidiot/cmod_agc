@@ -165,6 +165,8 @@ proc checkRequiredFiles { origin_dir} {
  "[file normalize "$origin_dir/hdl/monitor/usb_interface.v"]"\
  "[file normalize "$origin_dir/hdl/cmod_agc.v"]"\
  "[file normalize "$origin_dir/roms/Aurora88.coe"]"\
+ "[file normalize "$origin_dir/roms/Luminary099.coe"]"\
+ "[file normalize "$origin_dir/roms/l99_p63.coe"]"\
  "[file normalize "$origin_dir/constr/cmod_agc.xdc"]"\
   ]
   foreach ifile $files {
@@ -361,6 +363,8 @@ set files [list \
  [file normalize "${origin_dir}/hdl/monitor/usb_interface.v"] \
  [file normalize "${origin_dir}/hdl/cmod_agc.v"] \
  [file normalize "${origin_dir}/roms/Aurora88.coe"] \
+ [file normalize "${origin_dir}/roms/Luminary099.coe"] \
+ [file normalize "${origin_dir}/roms/l99_p63.coe"] \
 ]
 add_files -norecurse -fileset $obj $files
 

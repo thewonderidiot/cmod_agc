@@ -40,8 +40,12 @@ module cmod_agc(
     input wire sbybut_in,
     input wire upl0_in,
     input wire upl1_in,
+    input wire dkstrt_in,
+    input wire dkend_in,
+    input wire dkbsnc_in,
 
     output wire COMACT,
+    output wire DKDATA,
     output wire ELSNCM,
     output wire KYRLS,
     output wire OPEROR,
@@ -359,9 +363,9 @@ reg CDUYP = 0; //input
 reg CDUZM = 0; //input
 reg CDUZP = 0; //input
 reg CTLSAT = 0; //input
-reg DKBSNC = 0; //input
-reg DKEND = 0; //input
-reg DKSTRT = 0; //input
+wire DKBSNC; //input
+wire DKEND; //input
+wire DKSTRT; //input
 reg FLTOUT = 0;
 reg FREFUN = 0; //input
 reg GATEX_n = 1; //input
@@ -526,6 +530,9 @@ debounce #(1, 10) db6(prop_clk, rst_n, mkey5_in, MKEY5);
 debounce #(1, 10) db7(prop_clk, rst_n, sbybut_in, SBYBUT);
 debounce #(1, 10) db8(prop_clk, rst_n, upl0_in, UPL0);
 debounce #(1, 10) db9(prop_clk, rst_n, upl1_in, UPL1);
+debounce #(1, 10) db10(prop_clk, rst_n, dkstrt_in, DKSTRT);
+debounce #(1, 10) db11(prop_clk, rst_n, dkend_in, DKEND);
+debounce #(1, 10) db12(prop_clk, rst_n, dkbsnc_in, DKBSNC);
 
 assign IN3214 = SBYBUT;
 

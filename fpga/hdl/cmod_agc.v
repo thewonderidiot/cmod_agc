@@ -73,12 +73,14 @@ assign rst_n = ~rst;
 wire prop_clk;
 wire prop_locked;
 wire agc_clk;
+wire mon_clk;
 
 prop_clk_div prop_div(
     .clk_in1(clk),
     .reset(~rst_n),
     .locked(prop_locked),
-    .clk_out1(prop_clk)
+    .clk_out1(prop_clk),
+    .clk_out2(mon_clk)
 );
 
 agc_clk_div agc_div(
@@ -243,7 +245,7 @@ assign mst = {MST3, MST2, MST1};
 assign mbr = {MBR2, MBR1};
 
 monitor mon(
-    .clk(prop_clk),
+    .clk(mon_clk),
     .rst_n(rst_n),
 
     // FT232 UART interface

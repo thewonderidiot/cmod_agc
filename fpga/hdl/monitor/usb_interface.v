@@ -44,7 +44,7 @@ assign cmd_ready = (~cmd_fifo_empty) & (~read_fifo_full);
 
 uart_rx #(
     .BIT_RATE(1000000),
-    .CLK_HZ(52000000)
+    .CLK_HZ(120000000)
 ) uart_rx0 (
     .clk(clk),
     .resetn(rst_n),
@@ -155,7 +155,7 @@ read_byte_fifo read_byte_queue(
 
 uart_tx #(
     .BIT_RATE(1000000),
-    .CLK_HZ(52000000)
+    .CLK_HZ(120000000)
 ) uart_tx0 (
     .clk(clk),
     .resetn(rst_n),

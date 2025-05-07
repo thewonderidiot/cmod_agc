@@ -10,14 +10,10 @@ module monitor(
     output wire txd,
 
     // AGC signals
-    input wire bplssw_p,
-    input wire bplssw_n,
-    input wire p4sw_p,
-    input wire p4sw_n,
-    input wire p3v3io_p,
-    input wire p3v3io_n,
-    input wire mtemp_p,
-    input wire mtemp_n,
+    input wire a15_p,
+    input wire a15_n,
+    input wire a16_p,
+    input wire a16_n,
 
     input wire mgojam,
     input wire mstpit_n,
@@ -372,14 +368,10 @@ status_regs stat_regs(
     .write_en(status_write_en),
     .data_out(status_data),
 
-    .bplssw_p(bplssw_p),
-    .bplssw_n(bplssw_n),
-    .p4sw_p(p4sw_p),
-    .p4sw_n(p4sw_n),
-    .p3v3io_p(p3v3io_p),
-    .p3v3io_n(p3v3io_n),
-    .mtemp_p(mtemp_p),
-    .mtemp_n(mtemp_n),
+    .a15_p(a15_p),
+    .a15_n(a15_n),
+    .a16_p(a16_p),
+    .a16_n(a16_n),
 
     .mt05(mt[5]),
     .mt08(mt[8]),

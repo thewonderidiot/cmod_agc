@@ -475,22 +475,14 @@ ReadStatusVccAux = namedtuple('ReadStatusVccAux', [])
 ReadStatusVccAux.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 StatusVccAux = namedtuple('StatusVccAux', ['counts'])
 StatusVccAux.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusP3v3io = namedtuple('ReadStatusP3v3io', [])
-ReadStatusP3v3io.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusP3v3io = namedtuple('StatusP3v3io', ['counts'])
-StatusP3v3io.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusAgcTemp = namedtuple('ReadStatusAgcTemp', [])
-ReadStatusAgcTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusAgcTemp = namedtuple('StatusAgcTemp', ['counts'])
-StatusAgcTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusBplssw = namedtuple('ReadStatusBplssw', [])
-ReadStatusBplssw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusBplssw = namedtuple('StatusBplssw', ['counts'])
-StatusBplssw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusP4sw = namedtuple('ReadStatusP4sw', [])
-ReadStatusP4sw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusP4sw = namedtuple('StatusP4sw', ['counts'])
-StatusP4sw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusAgcA15 = namedtuple('ReadStatusAgcA15', [])
+ReadStatusAgcA15.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusAgcA15 = namedtuple('StatusAgcA15', ['counts'])
+StatusAgcA15.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusAgcA16 = namedtuple('ReadStatusAgcA16', [])
+ReadStatusAgcA16.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusAgcA16 = namedtuple('StatusAgcA16', ['counts'])
+StatusAgcA16.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadStatusMismatchAddr = namedtuple('ReadStatusMismatchAddr', [])
 ReadStatusMismatchAddr.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 StatusMismatchAddr = namedtuple('StatusMismatchAddr', ['addr'])
@@ -617,10 +609,8 @@ class Status(object):
     MonTemp = 0x0010
     VccInt = 0x0011
     VccAux = 0x0012
-    P3v3io = 0x0013
-    AgcTemp = 0x0014
-    Bplssw = 0x0015
-    P4sw = 0x0016
+    AgcA15 = 0x0013
+    AgcA16 = 0x0014
     MismatchAddr = 0x0040
     MismatchData = 0x0041
 
@@ -1333,17 +1323,11 @@ def _pack_ReadStatusVccInt(msg):
 def _pack_ReadStatusVccAux(msg):
     return _pack_read_msg(AddressGroup.Status, Status.VccAux)
 
-def _pack_ReadStatusP3v3io(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.P3v3io)
+def _pack_ReadStatusAgcA15(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.AgcA15)
 
-def _pack_ReadStatusAgcTemp(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.AgcTemp)
-
-def _pack_ReadStatusBplssw(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.Bplssw)
-
-def _pack_ReadStatusP4sw(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.P4sw)
+def _pack_ReadStatusAgcA16(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.AgcA16)
 
 def _pack_ReadStatusMismatchAddr(msg):
     return _pack_read_msg(AddressGroup.Status, Status.MismatchAddr)
@@ -1925,23 +1909,13 @@ def _unpack_StatusVccAux(data):
         counts = (data >> 4) & 0x0FFF,
     )
 
-def _unpack_StatusP3v3io(data):
-    return StatusP3v3io(
+def _unpack_StatusAgcA15(data):
+    return StatusAgcA15(
         counts = (data >> 4) & 0x0FFF,
     )
 
-def _unpack_StatusAgcTemp(data):
-    return StatusAgcTemp(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusBplssw(data):
-    return StatusBplssw(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusP4sw(data):
-    return StatusP4sw(
+def _unpack_StatusAgcA16(data):
+    return StatusAgcA16(
         counts = (data >> 4) & 0x0FFF,
     )
 
@@ -2033,10 +2007,8 @@ _unpack_reg_fns = {
     (DATA_FLAG | AddressGroup.Status, Status.MonTemp): _unpack_StatusMonTemp,
     (DATA_FLAG | AddressGroup.Status, Status.VccInt): _unpack_StatusVccInt,
     (DATA_FLAG | AddressGroup.Status, Status.VccAux): _unpack_StatusVccAux,
-    (DATA_FLAG | AddressGroup.Status, Status.P3v3io): _unpack_StatusP3v3io,
-    (DATA_FLAG | AddressGroup.Status, Status.AgcTemp): _unpack_StatusAgcTemp,
-    (DATA_FLAG | AddressGroup.Status, Status.Bplssw): _unpack_StatusBplssw,
-    (DATA_FLAG | AddressGroup.Status, Status.P4sw): _unpack_StatusP4sw,
+    (DATA_FLAG | AddressGroup.Status, Status.AgcA15): _unpack_StatusAgcA15,
+    (DATA_FLAG | AddressGroup.Status, Status.AgcA16): _unpack_StatusAgcA16,
     (DATA_FLAG | AddressGroup.Status, Status.MismatchAddr): _unpack_StatusMismatchAddr,
     (DATA_FLAG | AddressGroup.Status, Status.MismatchData): _unpack_StatusMismatchData,
 }

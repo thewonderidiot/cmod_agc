@@ -13,14 +13,10 @@ module status_regs(
     input wire [15:0] data_in,
     output wire [15:0] data_out,
 
-    input wire bplssw_p,
-    input wire bplssw_n,
-    input wire p4sw_p,
-    input wire p4sw_n,
-    input wire p3v3io_p,
-    input wire p3v3io_n,
-    input wire mtemp_p,
-    input wire mtemp_n,
+    input wire a15_p,
+    input wire a15_n,
+    input wire a16_p,
+    input wire a16_n,
 
     input wire mt05,
     input wire mt08,
@@ -48,13 +44,58 @@ module status_regs(
     input wire [16:1] mismatch_data
 );
 
+wire [4:0] adc_channel;
+wire [6:0] adc_daddr;
+assign adc_daddr = {2'b0, adc_channel};
+wire adc_eoc;
+wire [15:0] adc_do;
+wire adc_drdy;
+
+mon_adc adc(
+    .daddr_in(adc_daddr),
+    .dclk_in(clk),
+    .den_in(adc_eoc),
+    .di_in(16'b0),
+    .dwe_in(1'b0),
+    .reset_in(~rst_n),
+    .vauxp4(a15_p),
+    .vauxn4(a15_n),
+    .vauxp12(a16_p),
+    .vauxn12(a16_n),
+    .busy_out(),
+    .channel_out(adc_channel),
+    .do_out(adc_do),
+    .drdy_out(adc_drdy),
+    .eoc_out(adc_eoc),
+    .eos_out(),
+    .alarm_out(),
+    .vp_in(1'b0),
+    .vn_in(1'b0)
+);
+
 reg [15:0] adc_temp = 16'b0;
 reg [15:0] adc_vccint = 16'b0;
 reg [15:0] adc_vccaux = 16'b0;
-reg [15:0] adc_bplssw = 16'b0;
-reg [15:0] adc_p4sw = 16'b0;
-reg [15:0] adc_p3v3io = 16'b0;
-reg [15:0] adc_mtemp = 16'b0;
+reg [15:0] adc_a15 = 16'b0;
+reg [15:0] adc_a16 = 16'b0;
+
+always @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
+        adc_temp <= 16'b0;
+        adc_vccint <= 16'b0;
+        adc_vccaux <= 16'b0;
+        adc_a15 <= 16'b0;
+        adc_a16 <= 16'b0;
+    end else if (adc_drdy) begin
+        case (adc_channel)
+        `ADC_CHAN_TEMP:   adc_temp <= adc_do;
+        `ADC_CHAN_VCCINT: adc_vccint <= adc_do;
+        `ADC_CHAN_VCCAUX: adc_vccaux <= adc_do;
+        `ADC_CHAN_VAUX4:  adc_a15 <= adc_do;
+        `ADC_CHAN_VAUX12: adc_a16 <= adc_do;
+        endcase
+    end
+end
 
 localparam VFAIL = 0,
            OSCAL = 1,
@@ -147,10 +188,8 @@ always @(posedge clk or negedge rst_n) begin
         `STATUS_REG_MON_TEMP:   read_data <= adc_temp;
         `STATUS_REG_MON_VCCINT: read_data <= adc_vccint;
         `STATUS_REG_MON_VCCAUX: read_data <= adc_vccaux;
-        `STATUS_REG_MON_P3V3IO: read_data <= adc_p3v3io;
-        `STATUS_REG_AGC_TEMP:   read_data <= adc_mtemp;
-        `STATUS_REG_AGC_BPLSSW: read_data <= adc_bplssw;
-        `STATUS_REG_AGC_P4SW:   read_data <= adc_p4sw;
+        `STATUS_REG_AGC_A15:    read_data <= adc_a15;
+        `STATUS_REG_AGC_A16:    read_data <= adc_a16;
         `STATUS_REG_MM_ADDR:    read_data <= mismatch_faddr;
         `STATUS_REG_MM_DATA:    read_data <= mismatch_data;
         endcase

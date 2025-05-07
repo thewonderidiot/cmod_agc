@@ -30,6 +30,11 @@ module cmod_agc(
     
     output wire led0,
 
+    input wire a15_p,
+    input wire a15_n,
+    input wire a16_p,
+    input wire a16_n,
+
     input wire caurst_in,
     input wire mainrs_in,
     input wire mkey1_in,
@@ -253,14 +258,10 @@ monitor mon(
     .rxd(rxd),
 
     // AGC signals
-    .bplssw_p(1'b0),
-    .bplssw_n(1'b0),
-    .p4sw_p(1'b0),
-    .p4sw_n(1'b0),
-    .p3v3io_p(1'b0),
-    .p3v3io_n(1'b0),
-    .mtemp_p(1'b0),
-    .mtemp_n(1'b0),
+    .a15_p(a15_p),
+    .a15_n(a15_n),
+    .a16_p(a16_p),
+    .a16_n(a16_n),
 
     .mgojam(MGOJAM),
     .mstpit_n(MSTPIT_n),

@@ -16,10 +16,10 @@ class ErasableMemSim(QFrame):
 
         self._setup_ui()
 
-        self._core_loader = MemoryLoad(usbif, um.WriteSimErasable, 0o10, 256, self._bank_switches, None)
+        self._core_loader = MemoryLoad(usbif, um.WriteSimErasable, 0o10, 256, self._bank_switches)
         self._core_loader.finished.connect(self._load_complete)
 
-        self._core_dumper = MemoryDump(usbif, um.ReadErasable, um.Erasable, 0o10, 256, self._bank_switches, None)
+        self._core_dumper = MemoryDump(usbif, um.ReadErasable, um.Erasable, 0o10, 256, self._bank_switches)
         self._core_loader.finished.connect(self._dump_complete)
 
     def _setup_ui(self):

@@ -6,7 +6,7 @@ import agc
 class MemoryDump(QObject):
     finished = Signal()
 
-    def __init__(self, usbif, read_msg, data_msg, num_banks, bank_size, switches, aux_switch=None):
+    def __init__(self, usbif, read_msg, data_msg, num_banks, bank_size, switches):
         QObject.__init__(self)
 
         self._usbif = usbif
@@ -20,7 +20,6 @@ class MemoryDump(QObject):
         self._bank = 0
 
         self._switches = switches
-        self._aux_switch = aux_switch
 
         self._timer = QElapsedTimer()
         self._timer.start()
@@ -54,10 +53,7 @@ class MemoryDump(QObject):
 
     def _dump_next_bank(self):
         while self._bank < self._num_banks:
-            if self._bank < 0o44:
-                sw = self._switches[self._bank]
-            else:
-                sw = self._aux_switch
+            sw = self._switches[self._bank]
 
             if sw.isChecked():
                 sw.setCheckState(Qt.PartiallyChecked)
@@ -81,10 +77,6 @@ class MemoryDump(QObject):
         for sw in self._switches:
             sw.setTristate(False)
             sw.update()
-
-        if self._aux_switch:
-            self._aux_switch.setTristate(False)
-            self._aux_switch.update()
 
         data = array.array('H')
         data.fromlist([agc.pack_word(m.data, m.parity) for m in self._data])

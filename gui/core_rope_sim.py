@@ -15,10 +15,10 @@ class CoreRopeSim(QFrame):
 
         self._setup_ui()
 
-        self._rope_loader = MemoryLoad(usbif, um.WriteSimFixed, 0o100, 1024, self._bank_switches, self._aux_switch)
+        self._rope_loader = MemoryLoad(usbif, um.WriteSimFixed, 0o44, 1024, self._bank_switches)
         self._rope_loader.finished.connect(self._load_complete)
 
-        self._rope_dumper = MemoryDump(usbif, um.ReadFixed, um.Fixed, 0o100, 1024, self._bank_switches, self._aux_switch)
+        self._rope_dumper = MemoryDump(usbif, um.ReadFixed, um.Fixed, 0o44, 1024, self._bank_switches)
         self._rope_loader.finished.connect(self._dump_complete)
 
     def _setup_ui(self):
@@ -36,8 +36,6 @@ class CoreRopeSim(QFrame):
             sw = self._create_bank_switch('%o' % bank, layout, row, col, 1)
             sw.stateChanged.connect(lambda state,bank=bank: self._update_crs_bank(bank))
             self._bank_switches.append(sw)
-
-        self._aux_switch = self._create_bank_switch('44-77', layout, 5, 0, 2)
 
         label = QLabel('CRS', self)
         font = label.font()
@@ -83,10 +81,9 @@ class CoreRopeSim(QFrame):
             bank = first_bank + i
             if bank < 0o44:
                 sw = self._bank_switches[bank]
+                enables[i] = sw.isChecked()
             else:
-                sw = self._aux_switch
-
-            enables[i] = sw.isChecked()
+                enables[i] = False
 
         write_crs_enables = getattr(um, 'WriteControlCRSBankEnable%u' % group)
         self._usbif.send(write_crs_enables(*enables))

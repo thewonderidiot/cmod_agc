@@ -21,16 +21,18 @@ def unpack(msg_bytes):
     else:
         return _unpack_reg_fns[(group, addr)](data)
 
-ReadSimErasable = namedtuple('ReadSimErasable', ['addr'])
-ReadSimErasable.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-SimErasable = namedtuple('SimErasable', ['addr', 'parity', 'data'])
-SimErasable.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-WriteSimErasable = namedtuple('WriteSimErasable', ['addr', 'parity', 'data'])
-WriteSimErasable.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadTrace = namedtuple('ReadTrace', ['addr'])
-ReadTrace.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-Trace = namedtuple('Trace', ['addr', 'data'])
-Trace.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadChannels = namedtuple('ReadChannels', ['addr'])
+ReadChannels.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+Channels = namedtuple('Channels', ['addr', 'data'])
+Channels.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+WriteChannels = namedtuple('WriteChannels', ['addr', 'data'])
+WriteChannels.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadSimFixed = namedtuple('ReadSimFixed', ['addr'])
+ReadSimFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+SimFixed = namedtuple('SimFixed', ['addr', 'parity', 'data'])
+SimFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+WriteSimFixed = namedtuple('WriteSimFixed', ['addr', 'parity', 'data'])
+WriteSimFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadNASSPCh10 = namedtuple('ReadNASSPCh10', [])
 ReadNASSPCh10.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 NASSPCh10 = namedtuple('NASSPCh10', ['value'])
@@ -119,62 +121,14 @@ ReadNASSPAltm = namedtuple('ReadNASSPAltm', [])
 ReadNASSPAltm.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 NASSPAltm = namedtuple('NASSPAltm', ['counts', 'new'])
 NASSPAltm.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegA = namedtuple('ReadMonRegA', [])
-ReadMonRegA.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegA = namedtuple('MonRegA', ['a'])
-MonRegA.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegL = namedtuple('ReadMonRegL', [])
-ReadMonRegL.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegL = namedtuple('MonRegL', ['l'])
-MonRegL.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegQ = namedtuple('ReadMonRegQ', [])
-ReadMonRegQ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegQ = namedtuple('MonRegQ', ['q'])
-MonRegQ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegZ = namedtuple('ReadMonRegZ', [])
-ReadMonRegZ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegZ = namedtuple('MonRegZ', ['z'])
-MonRegZ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegBB = namedtuple('ReadMonRegBB', [])
-ReadMonRegBB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegBB = namedtuple('MonRegBB', ['eb', 'fb'])
-MonRegBB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegB = namedtuple('ReadMonRegB', [])
-ReadMonRegB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegB = namedtuple('MonRegB', ['b'])
-MonRegB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegS = namedtuple('ReadMonRegS', [])
-ReadMonRegS.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegS = namedtuple('MonRegS', ['s'])
-MonRegS.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegG = namedtuple('ReadMonRegG', [])
-ReadMonRegG.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegG = namedtuple('MonRegG', ['g'])
-MonRegG.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegY = namedtuple('ReadMonRegY', [])
-ReadMonRegY.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegY = namedtuple('MonRegY', ['y'])
-MonRegY.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegU = namedtuple('ReadMonRegU', [])
-ReadMonRegU.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegU = namedtuple('MonRegU', ['u'])
-MonRegU.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegI = namedtuple('ReadMonRegI', [])
-ReadMonRegI.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegI = namedtuple('MonRegI', ['sq', 'sqext', 'st', 'br'])
-MonRegI.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegStatus = namedtuple('ReadMonRegStatus', [])
-ReadMonRegStatus.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegStatus = namedtuple('MonRegStatus', ['gojam', 'run', 'iip', 'inhl', 'inkl', 'outcom'])
-MonRegStatus.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegParity = namedtuple('ReadMonRegParity', [])
-ReadMonRegParity.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegParity = namedtuple('MonRegParity', ['g_gp', 'g_sp', 'w_gp', 'w_sp'])
-MonRegParity.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonRegW = namedtuple('ReadMonRegW', [])
-ReadMonRegW.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonRegW = namedtuple('MonRegW', ['w'])
-MonRegW.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonChanFEXT = namedtuple('ReadMonChanFEXT', [])
+ReadMonChanFEXT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonChanFEXT = namedtuple('MonChanFEXT', ['fext'])
+MonChanFEXT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonChanRestart = namedtuple('ReadMonChanRestart', [])
+ReadMonChanRestart.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonChanRestart = namedtuple('MonChanRestart', ['parity_fail', 'parity_erasable', 'tc_trap', 'rupt_lock', 'night_watchman', 'voltage_fail', 'counter_fail', 'scaler_fail', 'scaler_double'])
+MonChanRestart.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadDSKYProg = namedtuple('ReadDSKYProg', [])
 ReadDSKYProg.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 DSKYProg = namedtuple('DSKYProg', ['digit1', 'digit2'])
@@ -221,76 +175,6 @@ DSKYStatus = namedtuple('DSKYStatus', ['vel', 'alt', 'tracker', 'restart', 'prog
 DSKYStatus.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 WriteDSKYNavButton = namedtuple('WriteDSKYNavButton', ['keycode'])
 WriteDSKYNavButton.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadFixed = namedtuple('ReadFixed', ['addr'])
-ReadFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-Fixed = namedtuple('Fixed', ['addr', 'parity', 'data'])
-Fixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusAlarms = namedtuple('ReadStatusAlarms', [])
-ReadStatusAlarms.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusAlarms = namedtuple('StatusAlarms', ['vfail', 'oscal', 'scafl', 'scdbl', 'ctral', 'tcal', 'rptal', 'fpal', 'epal', 'watch', 'pipal', 'warn'])
-StatusAlarms.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-WriteStatusAlarms = namedtuple('WriteStatusAlarms', ['vfail', 'oscal', 'scafl', 'scdbl', 'ctral', 'tcal', 'rptal', 'fpal', 'epal', 'watch', 'pipal', 'warn'])
-WriteStatusAlarms.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusPeripheral = namedtuple('ReadStatusPeripheral', [])
-ReadStatusPeripheral.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusPeripheral = namedtuple('StatusPeripheral', ['crs_cycle', 'ems_cycle', 'ld', 'chld', 'rd', 'chrd'])
-StatusPeripheral.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusMonTemp = namedtuple('ReadStatusMonTemp', [])
-ReadStatusMonTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusMonTemp = namedtuple('StatusMonTemp', ['counts'])
-StatusMonTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusVccInt = namedtuple('ReadStatusVccInt', [])
-ReadStatusVccInt.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusVccInt = namedtuple('StatusVccInt', ['counts'])
-StatusVccInt.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusVccAux = namedtuple('ReadStatusVccAux', [])
-ReadStatusVccAux.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusVccAux = namedtuple('StatusVccAux', ['counts'])
-StatusVccAux.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusP3v3io = namedtuple('ReadStatusP3v3io', [])
-ReadStatusP3v3io.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusP3v3io = namedtuple('StatusP3v3io', ['counts'])
-StatusP3v3io.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusAgcTemp = namedtuple('ReadStatusAgcTemp', [])
-ReadStatusAgcTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusAgcTemp = namedtuple('StatusAgcTemp', ['counts'])
-StatusAgcTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusBplssw = namedtuple('ReadStatusBplssw', [])
-ReadStatusBplssw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusBplssw = namedtuple('StatusBplssw', ['counts'])
-StatusBplssw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusP4sw = namedtuple('ReadStatusP4sw', [])
-ReadStatusP4sw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusP4sw = namedtuple('StatusP4sw', ['counts'])
-StatusP4sw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusMismatchAddr = namedtuple('ReadStatusMismatchAddr', [])
-ReadStatusMismatchAddr.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusMismatchAddr = namedtuple('StatusMismatchAddr', ['addr'])
-StatusMismatchAddr.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadStatusMismatchData = namedtuple('ReadStatusMismatchData', [])
-ReadStatusMismatchData.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-StatusMismatchData = namedtuple('StatusMismatchData', ['data'])
-StatusMismatchData.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonChanFEXT = namedtuple('ReadMonChanFEXT', [])
-ReadMonChanFEXT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonChanFEXT = namedtuple('MonChanFEXT', ['fext'])
-MonChanFEXT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadMonChanRestart = namedtuple('ReadMonChanRestart', [])
-ReadMonChanRestart.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-MonChanRestart = namedtuple('MonChanRestart', ['parity_fail', 'parity_erasable', 'tc_trap', 'rupt_lock', 'night_watchman', 'voltage_fail', 'counter_fail', 'scaler_fail', 'scaler_double'])
-MonChanRestart.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadSimFixed = namedtuple('ReadSimFixed', ['addr'])
-ReadSimFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-SimFixed = namedtuple('SimFixed', ['addr', 'parity', 'data'])
-SimFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-WriteSimFixed = namedtuple('WriteSimFixed', ['addr', 'parity', 'data'])
-WriteSimFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ReadChannels = namedtuple('ReadChannels', ['addr'])
-ReadChannels.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-Channels = namedtuple('Channels', ['addr', 'data'])
-Channels.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-WriteChannels = namedtuple('WriteChannels', ['addr', 'data'])
-WriteChannels.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadErasable = namedtuple('ReadErasable', ['addr'])
 ReadErasable.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 Erasable = namedtuple('Erasable', ['addr', 'parity', 'data'])
@@ -385,9 +269,9 @@ WriteControlTimeSwitches = namedtuple('WriteControlTimeSwitches', ['t01', 't02',
 WriteControlTimeSwitches.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadControlPulseSwitches = namedtuple('ReadControlPulseSwitches', [])
 ReadControlPulseSwitches.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-ControlPulseSwitches = namedtuple('ControlPulseSwitches', ['a', 'l', 'q', 'z', 'rch', 'wch', 'g', 'b', 'y', 'ru', 'sp1', 'sp2'])
+ControlPulseSwitches = namedtuple('ControlPulseSwitches', ['a', 'z', 'q', 'x', 'y', 'u', 'b', 'g', 'l', 'wch', 'rch', 'sp'])
 ControlPulseSwitches.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
-WriteControlPulseSwitches = namedtuple('WriteControlPulseSwitches', ['a', 'l', 'q', 'z', 'rch', 'wch', 'g', 'b', 'y', 'ru', 'sp1', 'sp2'])
+WriteControlPulseSwitches = namedtuple('WriteControlPulseSwitches', ['a', 'z', 'q', 'x', 'y', 'u', 'b', 'g', 'l', 'wch', 'rch', 'sp'])
 WriteControlPulseSwitches.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadControlWCompVal = namedtuple('ReadControlWCompVal', [])
 ReadControlWCompVal.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
@@ -499,20 +383,136 @@ WriteControlStartS = namedtuple('WriteControlStartS', [])
 WriteControlStartS.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 WriteControlStartPreset = namedtuple('WriteControlStartPreset', [])
 WriteControlStartPreset.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegA = namedtuple('ReadMonRegA', [])
+ReadMonRegA.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegA = namedtuple('MonRegA', ['a'])
+MonRegA.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegL = namedtuple('ReadMonRegL', [])
+ReadMonRegL.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegL = namedtuple('MonRegL', ['l'])
+MonRegL.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegQ = namedtuple('ReadMonRegQ', [])
+ReadMonRegQ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegQ = namedtuple('MonRegQ', ['q'])
+MonRegQ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegZ = namedtuple('ReadMonRegZ', [])
+ReadMonRegZ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegZ = namedtuple('MonRegZ', ['z'])
+MonRegZ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegBB = namedtuple('ReadMonRegBB', [])
+ReadMonRegBB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegBB = namedtuple('MonRegBB', ['eb', 'fb'])
+MonRegBB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegB = namedtuple('ReadMonRegB', [])
+ReadMonRegB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegB = namedtuple('MonRegB', ['b'])
+MonRegB.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegS = namedtuple('ReadMonRegS', [])
+ReadMonRegS.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegS = namedtuple('MonRegS', ['s'])
+MonRegS.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegG = namedtuple('ReadMonRegG', [])
+ReadMonRegG.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegG = namedtuple('MonRegG', ['g'])
+MonRegG.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegY = namedtuple('ReadMonRegY', [])
+ReadMonRegY.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegY = namedtuple('MonRegY', ['y'])
+MonRegY.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegU = namedtuple('ReadMonRegU', [])
+ReadMonRegU.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegU = namedtuple('MonRegU', ['u'])
+MonRegU.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegI = namedtuple('ReadMonRegI', [])
+ReadMonRegI.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegI = namedtuple('MonRegI', ['sq', 'sqext', 'st', 'br'])
+MonRegI.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegStatus = namedtuple('ReadMonRegStatus', [])
+ReadMonRegStatus.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegStatus = namedtuple('MonRegStatus', ['gojam', 'run', 'iip', 'inhl', 'inkl', 'outcom'])
+MonRegStatus.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegParity = namedtuple('ReadMonRegParity', [])
+ReadMonRegParity.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegParity = namedtuple('MonRegParity', ['g_gp', 'g_sp', 'w_gp', 'w_sp'])
+MonRegParity.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonRegW = namedtuple('ReadMonRegW', [])
+ReadMonRegW.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonRegW = namedtuple('MonRegW', ['w'])
+MonRegW.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadFixed = namedtuple('ReadFixed', ['addr'])
+ReadFixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+Fixed = namedtuple('Fixed', ['addr', 'parity', 'data'])
+Fixed.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadTrace = namedtuple('ReadTrace', ['addr'])
+ReadTrace.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+Trace = namedtuple('Trace', ['addr', 'data'])
+Trace.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadSimErasable = namedtuple('ReadSimErasable', ['addr'])
+ReadSimErasable.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+SimErasable = namedtuple('SimErasable', ['addr', 'parity', 'data'])
+SimErasable.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+WriteSimErasable = namedtuple('WriteSimErasable', ['addr', 'parity', 'data'])
+WriteSimErasable.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusAlarms = namedtuple('ReadStatusAlarms', [])
+ReadStatusAlarms.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusAlarms = namedtuple('StatusAlarms', ['vfail', 'oscal', 'scafl', 'scdbl', 'ctral', 'tcal', 'rptal', 'fpal', 'epal', 'watch', 'pipal', 'warn'])
+StatusAlarms.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+WriteStatusAlarms = namedtuple('WriteStatusAlarms', ['vfail', 'oscal', 'scafl', 'scdbl', 'ctral', 'tcal', 'rptal', 'fpal', 'epal', 'watch', 'pipal', 'warn'])
+WriteStatusAlarms.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusPeripheral = namedtuple('ReadStatusPeripheral', [])
+ReadStatusPeripheral.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusPeripheral = namedtuple('StatusPeripheral', ['crs_cycle', 'ems_cycle', 'ld', 'chld', 'rd', 'chrd'])
+StatusPeripheral.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusMonTemp = namedtuple('ReadStatusMonTemp', [])
+ReadStatusMonTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusMonTemp = namedtuple('StatusMonTemp', ['counts'])
+StatusMonTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusVccInt = namedtuple('ReadStatusVccInt', [])
+ReadStatusVccInt.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusVccInt = namedtuple('StatusVccInt', ['counts'])
+StatusVccInt.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusVccAux = namedtuple('ReadStatusVccAux', [])
+ReadStatusVccAux.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusVccAux = namedtuple('StatusVccAux', ['counts'])
+StatusVccAux.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusP3v3io = namedtuple('ReadStatusP3v3io', [])
+ReadStatusP3v3io.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusP3v3io = namedtuple('StatusP3v3io', ['counts'])
+StatusP3v3io.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusAgcTemp = namedtuple('ReadStatusAgcTemp', [])
+ReadStatusAgcTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusAgcTemp = namedtuple('StatusAgcTemp', ['counts'])
+StatusAgcTemp.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusBplssw = namedtuple('ReadStatusBplssw', [])
+ReadStatusBplssw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusBplssw = namedtuple('StatusBplssw', ['counts'])
+StatusBplssw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusP4sw = namedtuple('ReadStatusP4sw', [])
+ReadStatusP4sw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusP4sw = namedtuple('StatusP4sw', ['counts'])
+StatusP4sw.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusMismatchAddr = namedtuple('ReadStatusMismatchAddr', [])
+ReadStatusMismatchAddr.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusMismatchAddr = namedtuple('StatusMismatchAddr', ['addr'])
+StatusMismatchAddr.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadStatusMismatchData = namedtuple('ReadStatusMismatchData', [])
+ReadStatusMismatchData.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+StatusMismatchData = namedtuple('StatusMismatchData', ['data'])
+StatusMismatchData.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 
 class AddressGroup(object):
-    SimErasable = 0x10
-    Trace = 0x25
-    NASSP = 0x26
-    MonReg = 0x21
-    DSKY = 0x23
-    Fixed = 0x01
-    Status = 0x24
-    MonChan = 0x22
-    SimFixed = 0x11
     Channels = 0x02
+    SimFixed = 0x11
+    NASSP = 0x26
+    MonChan = 0x22
+    DSKY = 0x23
     Erasable = 0x00
     Control = 0x20
+    MonReg = 0x21
+    Fixed = 0x01
+    Trace = 0x25
+    SimErasable = 0x10
+    Status = 0x24
 
 class NASSP(object):
     Ch10 = 0x0000
@@ -532,21 +532,9 @@ class NASSP(object):
     CduSCmd = 0x0034
     Thrust = 0x0035
     Altm = 0x0036
-class MonReg(object):
-    A = 0x0000
-    L = 0x0001
-    Q = 0x0002
-    Z = 0x0003
-    BB = 0x0004
-    B = 0x0005
-    S = 0x0006
-    G = 0x0007
-    Y = 0x0008
-    U = 0x0009
-    I = 0x000A
-    Status = 0x000B
-    Parity = 0x000C
-    W = 0x0040
+class MonChan(object):
+    FEXT = 0x0007
+    Restart = 0x003F
 class DSKY(object):
     Prog = 0x0000
     Verb = 0x0001
@@ -561,21 +549,6 @@ class DSKY(object):
     Proceed = 0x000A
     Status = 0x000B
     NavButton = 0x000C
-class Status(object):
-    Alarms = 0x0000
-    Peripheral = 0x0001
-    MonTemp = 0x0010
-    VccInt = 0x0011
-    VccAux = 0x0012
-    P3v3io = 0x0013
-    AgcTemp = 0x0014
-    Bplssw = 0x0015
-    P4sw = 0x0016
-    MismatchAddr = 0x0040
-    MismatchData = 0x0041
-class MonChan(object):
-    FEXT = 0x0007
-    Restart = 0x003F
 class Control(object):
     Start = 0x0000
     Stop = 0x0001
@@ -623,6 +596,33 @@ class Control(object):
     ReadChan = 0x0075
     StartS = 0x0076
     StartPreset = 0x0077
+class MonReg(object):
+    A = 0x0000
+    L = 0x0001
+    Q = 0x0002
+    Z = 0x0003
+    BB = 0x0004
+    B = 0x0005
+    S = 0x0006
+    G = 0x0007
+    Y = 0x0008
+    U = 0x0009
+    I = 0x000A
+    Status = 0x000B
+    Parity = 0x000C
+    W = 0x0040
+class Status(object):
+    Alarms = 0x0000
+    Peripheral = 0x0001
+    MonTemp = 0x0010
+    VccInt = 0x0011
+    VccAux = 0x0012
+    P3v3io = 0x0013
+    AgcTemp = 0x0014
+    Bplssw = 0x0015
+    P4sw = 0x0016
+    MismatchAddr = 0x0040
+    MismatchData = 0x0041
 
 class WriteWMode:
     ALL = 0
@@ -633,17 +633,22 @@ class WriteWMode:
     P_I = 5
     P_S = 6
 
-def _pack_ReadSimErasable(msg):
-    return _pack_read_msg(AddressGroup.SimErasable, msg.addr)
+def _pack_ReadChannels(msg):
+    return _pack_read_msg(AddressGroup.Channels, msg.addr)
 
-def _pack_WriteSimErasable(msg):
+def _pack_WriteChannels(msg):
+    data = 0x0000
+    data |= (msg.data & 0xFFFF) << 0
+    return _pack_write_msg(AddressGroup.Channels, msg.addr, data)
+
+def _pack_ReadSimFixed(msg):
+    return _pack_read_msg(AddressGroup.SimFixed, msg.addr)
+
+def _pack_WriteSimFixed(msg):
     data = 0x0000
     data |= (msg.parity & 0x0001) << 0
     data |= (msg.data & 0x7FFF) << 1
-    return _pack_write_msg(AddressGroup.SimErasable, msg.addr, data)
-
-def _pack_ReadTrace(msg):
-    return _pack_read_msg(AddressGroup.Trace, msg.addr)
+    return _pack_write_msg(AddressGroup.SimFixed, msg.addr, data)
 
 def _pack_ReadNASSPCh10(msg):
     return _pack_read_msg(AddressGroup.NASSP, NASSP.Ch10)
@@ -750,47 +755,11 @@ def _pack_ReadNASSPThrust(msg):
 def _pack_ReadNASSPAltm(msg):
     return _pack_read_msg(AddressGroup.NASSP, NASSP.Altm)
 
-def _pack_ReadMonRegA(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.A)
+def _pack_ReadMonChanFEXT(msg):
+    return _pack_read_msg(AddressGroup.MonChan, MonChan.FEXT)
 
-def _pack_ReadMonRegL(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.L)
-
-def _pack_ReadMonRegQ(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.Q)
-
-def _pack_ReadMonRegZ(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.Z)
-
-def _pack_ReadMonRegBB(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.BB)
-
-def _pack_ReadMonRegB(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.B)
-
-def _pack_ReadMonRegS(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.S)
-
-def _pack_ReadMonRegG(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.G)
-
-def _pack_ReadMonRegY(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.Y)
-
-def _pack_ReadMonRegU(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.U)
-
-def _pack_ReadMonRegI(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.I)
-
-def _pack_ReadMonRegStatus(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.Status)
-
-def _pack_ReadMonRegParity(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.Parity)
-
-def _pack_ReadMonRegW(msg):
-    return _pack_read_msg(AddressGroup.MonReg, MonReg.W)
+def _pack_ReadMonChanRestart(msg):
+    return _pack_read_msg(AddressGroup.MonChan, MonChan.Restart)
 
 def _pack_ReadDSKYProg(msg):
     return _pack_read_msg(AddressGroup.DSKY, DSKY.Prog)
@@ -835,81 +804,6 @@ def _pack_WriteDSKYNavButton(msg):
     data = 0x0000
     data |= (msg.keycode & 0x001F) << 0
     return _pack_write_msg(AddressGroup.DSKY, DSKY.NavButton, data)
-
-def _pack_ReadFixed(msg):
-    return _pack_read_msg(AddressGroup.Fixed, msg.addr)
-
-def _pack_ReadStatusAlarms(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.Alarms)
-
-def _pack_WriteStatusAlarms(msg):
-    data = 0x0000
-    data |= (msg.vfail & 0x0001) << 0
-    data |= (msg.oscal & 0x0001) << 1
-    data |= (msg.scafl & 0x0001) << 2
-    data |= (msg.scdbl & 0x0001) << 3
-    data |= (msg.ctral & 0x0001) << 4
-    data |= (msg.tcal & 0x0001) << 5
-    data |= (msg.rptal & 0x0001) << 6
-    data |= (msg.fpal & 0x0001) << 7
-    data |= (msg.epal & 0x0001) << 8
-    data |= (msg.watch & 0x0001) << 9
-    data |= (msg.pipal & 0x0001) << 10
-    data |= (msg.warn & 0x0001) << 11
-    return _pack_write_msg(AddressGroup.Status, Status.Alarms, data)
-
-def _pack_ReadStatusPeripheral(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.Peripheral)
-
-def _pack_ReadStatusMonTemp(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.MonTemp)
-
-def _pack_ReadStatusVccInt(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.VccInt)
-
-def _pack_ReadStatusVccAux(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.VccAux)
-
-def _pack_ReadStatusP3v3io(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.P3v3io)
-
-def _pack_ReadStatusAgcTemp(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.AgcTemp)
-
-def _pack_ReadStatusBplssw(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.Bplssw)
-
-def _pack_ReadStatusP4sw(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.P4sw)
-
-def _pack_ReadStatusMismatchAddr(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.MismatchAddr)
-
-def _pack_ReadStatusMismatchData(msg):
-    return _pack_read_msg(AddressGroup.Status, Status.MismatchData)
-
-def _pack_ReadMonChanFEXT(msg):
-    return _pack_read_msg(AddressGroup.MonChan, MonChan.FEXT)
-
-def _pack_ReadMonChanRestart(msg):
-    return _pack_read_msg(AddressGroup.MonChan, MonChan.Restart)
-
-def _pack_ReadSimFixed(msg):
-    return _pack_read_msg(AddressGroup.SimFixed, msg.addr)
-
-def _pack_WriteSimFixed(msg):
-    data = 0x0000
-    data |= (msg.parity & 0x0001) << 0
-    data |= (msg.data & 0x7FFF) << 1
-    return _pack_write_msg(AddressGroup.SimFixed, msg.addr, data)
-
-def _pack_ReadChannels(msg):
-    return _pack_read_msg(AddressGroup.Channels, msg.addr)
-
-def _pack_WriteChannels(msg):
-    data = 0x0000
-    data |= (msg.data & 0xFFFF) << 0
-    return _pack_write_msg(AddressGroup.Channels, msg.addr, data)
 
 def _pack_ReadErasable(msg):
     return _pack_read_msg(AddressGroup.Erasable, msg.addr)
@@ -1072,17 +966,17 @@ def _pack_ReadControlPulseSwitches(msg):
 def _pack_WriteControlPulseSwitches(msg):
     data = 0x0000
     data |= (msg.a & 0x0001) << 0
-    data |= (msg.l & 0x0001) << 1
+    data |= (msg.z & 0x0001) << 1
     data |= (msg.q & 0x0001) << 2
-    data |= (msg.z & 0x0001) << 3
-    data |= (msg.rch & 0x0001) << 4
-    data |= (msg.wch & 0x0001) << 5
-    data |= (msg.g & 0x0001) << 6
-    data |= (msg.b & 0x0001) << 7
-    data |= (msg.y & 0x0001) << 8
-    data |= (msg.ru & 0x0001) << 9
-    data |= (msg.sp1 & 0x0001) << 10
-    data |= (msg.sp2 & 0x0001) << 11
+    data |= (msg.x & 0x0001) << 3
+    data |= (msg.y & 0x0001) << 4
+    data |= (msg.u & 0x0001) << 5
+    data |= (msg.b & 0x0001) << 6
+    data |= (msg.g & 0x0001) << 7
+    data |= (msg.l & 0x0001) << 8
+    data |= (msg.wch & 0x0001) << 9
+    data |= (msg.rch & 0x0001) << 10
+    data |= (msg.sp & 0x0001) << 11
     return _pack_write_msg(AddressGroup.Control, Control.PulseSwitches, data)
 
 def _pack_ReadControlWCompVal(msg):
@@ -1351,18 +1245,124 @@ def _pack_WriteControlStartPreset(msg):
     data = 0x0000
     return _pack_write_msg(AddressGroup.Control, Control.StartPreset, data)
 
+def _pack_ReadMonRegA(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.A)
 
-def _unpack_SimErasable(addr, data):
-    return SimErasable(
+def _pack_ReadMonRegL(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.L)
+
+def _pack_ReadMonRegQ(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.Q)
+
+def _pack_ReadMonRegZ(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.Z)
+
+def _pack_ReadMonRegBB(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.BB)
+
+def _pack_ReadMonRegB(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.B)
+
+def _pack_ReadMonRegS(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.S)
+
+def _pack_ReadMonRegG(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.G)
+
+def _pack_ReadMonRegY(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.Y)
+
+def _pack_ReadMonRegU(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.U)
+
+def _pack_ReadMonRegI(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.I)
+
+def _pack_ReadMonRegStatus(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.Status)
+
+def _pack_ReadMonRegParity(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.Parity)
+
+def _pack_ReadMonRegW(msg):
+    return _pack_read_msg(AddressGroup.MonReg, MonReg.W)
+
+def _pack_ReadFixed(msg):
+    return _pack_read_msg(AddressGroup.Fixed, msg.addr)
+
+def _pack_ReadTrace(msg):
+    return _pack_read_msg(AddressGroup.Trace, msg.addr)
+
+def _pack_ReadSimErasable(msg):
+    return _pack_read_msg(AddressGroup.SimErasable, msg.addr)
+
+def _pack_WriteSimErasable(msg):
+    data = 0x0000
+    data |= (msg.parity & 0x0001) << 0
+    data |= (msg.data & 0x7FFF) << 1
+    return _pack_write_msg(AddressGroup.SimErasable, msg.addr, data)
+
+def _pack_ReadStatusAlarms(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.Alarms)
+
+def _pack_WriteStatusAlarms(msg):
+    data = 0x0000
+    data |= (msg.vfail & 0x0001) << 0
+    data |= (msg.oscal & 0x0001) << 1
+    data |= (msg.scafl & 0x0001) << 2
+    data |= (msg.scdbl & 0x0001) << 3
+    data |= (msg.ctral & 0x0001) << 4
+    data |= (msg.tcal & 0x0001) << 5
+    data |= (msg.rptal & 0x0001) << 6
+    data |= (msg.fpal & 0x0001) << 7
+    data |= (msg.epal & 0x0001) << 8
+    data |= (msg.watch & 0x0001) << 9
+    data |= (msg.pipal & 0x0001) << 10
+    data |= (msg.warn & 0x0001) << 11
+    return _pack_write_msg(AddressGroup.Status, Status.Alarms, data)
+
+def _pack_ReadStatusPeripheral(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.Peripheral)
+
+def _pack_ReadStatusMonTemp(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.MonTemp)
+
+def _pack_ReadStatusVccInt(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.VccInt)
+
+def _pack_ReadStatusVccAux(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.VccAux)
+
+def _pack_ReadStatusP3v3io(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.P3v3io)
+
+def _pack_ReadStatusAgcTemp(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.AgcTemp)
+
+def _pack_ReadStatusBplssw(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.Bplssw)
+
+def _pack_ReadStatusP4sw(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.P4sw)
+
+def _pack_ReadStatusMismatchAddr(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.MismatchAddr)
+
+def _pack_ReadStatusMismatchData(msg):
+    return _pack_read_msg(AddressGroup.Status, Status.MismatchData)
+
+
+def _unpack_Channels(addr, data):
+    return Channels(
+        addr = addr,
+        data = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_SimFixed(addr, data):
+    return SimFixed(
         addr = addr,
         parity = (data >> 0) & 0x0001,
         data = (data >> 1) & 0x7FFF,
-    )
-
-def _unpack_Trace(addr, data):
-    return Trace(
-        addr = addr,
-        data = (data >> 0) & 0xFFFF,
     )
 
 def _unpack_NASSPCh10(data):
@@ -1461,86 +1461,22 @@ def _unpack_NASSPAltm(data):
         new = (data >> 15) & 0x0001,
     )
 
-def _unpack_MonRegA(data):
-    return MonRegA(
-        a = (data >> 0) & 0xFFFF,
+def _unpack_MonChanFEXT(data):
+    return MonChanFEXT(
+        fext = (data >> 4) & 0x0007,
     )
 
-def _unpack_MonRegL(data):
-    return MonRegL(
-        l = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonRegQ(data):
-    return MonRegQ(
-        q = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonRegZ(data):
-    return MonRegZ(
-        z = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonRegBB(data):
-    return MonRegBB(
-        eb = (data >> 0) & 0x0007,
-        fb = (data >> 10) & 0x001F,
-    )
-
-def _unpack_MonRegB(data):
-    return MonRegB(
-        b = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonRegS(data):
-    return MonRegS(
-        s = (data >> 0) & 0x0FFF,
-    )
-
-def _unpack_MonRegG(data):
-    return MonRegG(
-        g = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonRegY(data):
-    return MonRegY(
-        y = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonRegU(data):
-    return MonRegU(
-        u = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonRegI(data):
-    return MonRegI(
-        sq = (data >> 0) & 0x003F,
-        sqext = (data >> 6) & 0x0001,
-        st = (data >> 7) & 0x0007,
-        br = (data >> 10) & 0x0003,
-    )
-
-def _unpack_MonRegStatus(data):
-    return MonRegStatus(
-        gojam = (data >> 0) & 0x0001,
-        run = (data >> 1) & 0x0001,
-        iip = (data >> 2) & 0x0001,
-        inhl = (data >> 3) & 0x0001,
-        inkl = (data >> 4) & 0x0001,
-        outcom = (data >> 5) & 0x0001,
-    )
-
-def _unpack_MonRegParity(data):
-    return MonRegParity(
-        g_gp = (data >> 0) & 0x0001,
-        g_sp = (data >> 1) & 0x0001,
-        w_gp = (data >> 2) & 0x0001,
-        w_sp = (data >> 3) & 0x0001,
-    )
-
-def _unpack_MonRegW(data):
-    return MonRegW(
-        w = (data >> 0) & 0xFFFF,
+def _unpack_MonChanRestart(data):
+    return MonChanRestart(
+        parity_fail = (data >> 0) & 0x0001,
+        parity_erasable = (data >> 1) & 0x0001,
+        tc_trap = (data >> 2) & 0x0001,
+        rupt_lock = (data >> 3) & 0x0001,
+        night_watchman = (data >> 4) & 0x0001,
+        voltage_fail = (data >> 5) & 0x0001,
+        counter_fail = (data >> 6) & 0x0001,
+        scaler_fail = (data >> 7) & 0x0001,
+        scaler_double = (data >> 8) & 0x0001,
     )
 
 def _unpack_DSKYProg(data):
@@ -1621,115 +1557,6 @@ def _unpack_DSKYStatus(data):
         uplink_acty = (data >> 13) & 0x0001,
         comp_acty = (data >> 14) & 0x0001,
         vnflash = (data >> 15) & 0x0001,
-    )
-
-def _unpack_Fixed(addr, data):
-    return Fixed(
-        addr = addr,
-        parity = (data >> 0) & 0x0001,
-        data = (data >> 1) & 0x7FFF,
-    )
-
-def _unpack_StatusAlarms(data):
-    return StatusAlarms(
-        vfail = (data >> 0) & 0x0001,
-        oscal = (data >> 1) & 0x0001,
-        scafl = (data >> 2) & 0x0001,
-        scdbl = (data >> 3) & 0x0001,
-        ctral = (data >> 4) & 0x0001,
-        tcal = (data >> 5) & 0x0001,
-        rptal = (data >> 6) & 0x0001,
-        fpal = (data >> 7) & 0x0001,
-        epal = (data >> 8) & 0x0001,
-        watch = (data >> 9) & 0x0001,
-        pipal = (data >> 10) & 0x0001,
-        warn = (data >> 11) & 0x0001,
-    )
-
-def _unpack_StatusPeripheral(data):
-    return StatusPeripheral(
-        crs_cycle = (data >> 0) & 0x0001,
-        ems_cycle = (data >> 1) & 0x0001,
-        ld = (data >> 2) & 0x0001,
-        chld = (data >> 3) & 0x0001,
-        rd = (data >> 4) & 0x0001,
-        chrd = (data >> 5) & 0x0001,
-    )
-
-def _unpack_StatusMonTemp(data):
-    return StatusMonTemp(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusVccInt(data):
-    return StatusVccInt(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusVccAux(data):
-    return StatusVccAux(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusP3v3io(data):
-    return StatusP3v3io(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusAgcTemp(data):
-    return StatusAgcTemp(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusBplssw(data):
-    return StatusBplssw(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusP4sw(data):
-    return StatusP4sw(
-        counts = (data >> 4) & 0x0FFF,
-    )
-
-def _unpack_StatusMismatchAddr(data):
-    return StatusMismatchAddr(
-        addr = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_StatusMismatchData(data):
-    return StatusMismatchData(
-        data = (data >> 0) & 0xFFFF,
-    )
-
-def _unpack_MonChanFEXT(data):
-    return MonChanFEXT(
-        fext = (data >> 4) & 0x0007,
-    )
-
-def _unpack_MonChanRestart(data):
-    return MonChanRestart(
-        parity_fail = (data >> 0) & 0x0001,
-        parity_erasable = (data >> 1) & 0x0001,
-        tc_trap = (data >> 2) & 0x0001,
-        rupt_lock = (data >> 3) & 0x0001,
-        night_watchman = (data >> 4) & 0x0001,
-        voltage_fail = (data >> 5) & 0x0001,
-        counter_fail = (data >> 6) & 0x0001,
-        scaler_fail = (data >> 7) & 0x0001,
-        scaler_double = (data >> 8) & 0x0001,
-    )
-
-def _unpack_SimFixed(addr, data):
-    return SimFixed(
-        addr = addr,
-        parity = (data >> 0) & 0x0001,
-        data = (data >> 1) & 0x7FFF,
-    )
-
-def _unpack_Channels(addr, data):
-    return Channels(
-        addr = addr,
-        data = (data >> 0) & 0xFFFF,
     )
 
 def _unpack_Erasable(addr, data):
@@ -1853,17 +1680,17 @@ def _unpack_ControlTimeSwitches(data):
 def _unpack_ControlPulseSwitches(data):
     return ControlPulseSwitches(
         a = (data >> 0) & 0x0001,
-        l = (data >> 1) & 0x0001,
+        z = (data >> 1) & 0x0001,
         q = (data >> 2) & 0x0001,
-        z = (data >> 3) & 0x0001,
-        rch = (data >> 4) & 0x0001,
-        wch = (data >> 5) & 0x0001,
-        g = (data >> 6) & 0x0001,
-        b = (data >> 7) & 0x0001,
-        y = (data >> 8) & 0x0001,
-        ru = (data >> 9) & 0x0001,
-        sp1 = (data >> 10) & 0x0001,
-        sp2 = (data >> 11) & 0x0001,
+        x = (data >> 3) & 0x0001,
+        y = (data >> 4) & 0x0001,
+        u = (data >> 5) & 0x0001,
+        b = (data >> 6) & 0x0001,
+        g = (data >> 7) & 0x0001,
+        l = (data >> 8) & 0x0001,
+        wch = (data >> 9) & 0x0001,
+        rch = (data >> 10) & 0x0001,
+        sp = (data >> 11) & 0x0001,
     )
 
 def _unpack_ControlWCompVal(data):
@@ -1955,6 +1782,179 @@ def _unpack_ControlSTRT2(data):
         strt2 = (data >> 0) & 0x0001,
     )
 
+def _unpack_MonRegA(data):
+    return MonRegA(
+        a = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegL(data):
+    return MonRegL(
+        l = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegQ(data):
+    return MonRegQ(
+        q = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegZ(data):
+    return MonRegZ(
+        z = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegBB(data):
+    return MonRegBB(
+        eb = (data >> 0) & 0x0007,
+        fb = (data >> 10) & 0x001F,
+    )
+
+def _unpack_MonRegB(data):
+    return MonRegB(
+        b = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegS(data):
+    return MonRegS(
+        s = (data >> 0) & 0x0FFF,
+    )
+
+def _unpack_MonRegG(data):
+    return MonRegG(
+        g = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegY(data):
+    return MonRegY(
+        y = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegU(data):
+    return MonRegU(
+        u = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_MonRegI(data):
+    return MonRegI(
+        sq = (data >> 0) & 0x003F,
+        sqext = (data >> 6) & 0x0001,
+        st = (data >> 7) & 0x0007,
+        br = (data >> 10) & 0x0003,
+    )
+
+def _unpack_MonRegStatus(data):
+    return MonRegStatus(
+        gojam = (data >> 0) & 0x0001,
+        run = (data >> 1) & 0x0001,
+        iip = (data >> 2) & 0x0001,
+        inhl = (data >> 3) & 0x0001,
+        inkl = (data >> 4) & 0x0001,
+        outcom = (data >> 5) & 0x0001,
+    )
+
+def _unpack_MonRegParity(data):
+    return MonRegParity(
+        g_gp = (data >> 0) & 0x0001,
+        g_sp = (data >> 1) & 0x0001,
+        w_gp = (data >> 2) & 0x0001,
+        w_sp = (data >> 3) & 0x0001,
+    )
+
+def _unpack_MonRegW(data):
+    return MonRegW(
+        w = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_Fixed(addr, data):
+    return Fixed(
+        addr = addr,
+        parity = (data >> 0) & 0x0001,
+        data = (data >> 1) & 0x7FFF,
+    )
+
+def _unpack_Trace(addr, data):
+    return Trace(
+        addr = addr,
+        data = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_SimErasable(addr, data):
+    return SimErasable(
+        addr = addr,
+        parity = (data >> 0) & 0x0001,
+        data = (data >> 1) & 0x7FFF,
+    )
+
+def _unpack_StatusAlarms(data):
+    return StatusAlarms(
+        vfail = (data >> 0) & 0x0001,
+        oscal = (data >> 1) & 0x0001,
+        scafl = (data >> 2) & 0x0001,
+        scdbl = (data >> 3) & 0x0001,
+        ctral = (data >> 4) & 0x0001,
+        tcal = (data >> 5) & 0x0001,
+        rptal = (data >> 6) & 0x0001,
+        fpal = (data >> 7) & 0x0001,
+        epal = (data >> 8) & 0x0001,
+        watch = (data >> 9) & 0x0001,
+        pipal = (data >> 10) & 0x0001,
+        warn = (data >> 11) & 0x0001,
+    )
+
+def _unpack_StatusPeripheral(data):
+    return StatusPeripheral(
+        crs_cycle = (data >> 0) & 0x0001,
+        ems_cycle = (data >> 1) & 0x0001,
+        ld = (data >> 2) & 0x0001,
+        chld = (data >> 3) & 0x0001,
+        rd = (data >> 4) & 0x0001,
+        chrd = (data >> 5) & 0x0001,
+    )
+
+def _unpack_StatusMonTemp(data):
+    return StatusMonTemp(
+        counts = (data >> 4) & 0x0FFF,
+    )
+
+def _unpack_StatusVccInt(data):
+    return StatusVccInt(
+        counts = (data >> 4) & 0x0FFF,
+    )
+
+def _unpack_StatusVccAux(data):
+    return StatusVccAux(
+        counts = (data >> 4) & 0x0FFF,
+    )
+
+def _unpack_StatusP3v3io(data):
+    return StatusP3v3io(
+        counts = (data >> 4) & 0x0FFF,
+    )
+
+def _unpack_StatusAgcTemp(data):
+    return StatusAgcTemp(
+        counts = (data >> 4) & 0x0FFF,
+    )
+
+def _unpack_StatusBplssw(data):
+    return StatusBplssw(
+        counts = (data >> 4) & 0x0FFF,
+    )
+
+def _unpack_StatusP4sw(data):
+    return StatusP4sw(
+        counts = (data >> 4) & 0x0FFF,
+    )
+
+def _unpack_StatusMismatchAddr(data):
+    return StatusMismatchAddr(
+        addr = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_StatusMismatchData(data):
+    return StatusMismatchData(
+        data = (data >> 0) & 0xFFFF,
+    )
+
 
 _unpack_reg_fns = {
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Ch10): _unpack_NASSPCh10,
@@ -1974,20 +1974,8 @@ _unpack_reg_fns = {
     (DATA_FLAG | AddressGroup.NASSP, NASSP.CduSCmd): _unpack_NASSPCduSCmd,
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Thrust): _unpack_NASSPThrust,
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Altm): _unpack_NASSPAltm,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.A): _unpack_MonRegA,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.L): _unpack_MonRegL,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.Q): _unpack_MonRegQ,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.Z): _unpack_MonRegZ,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.BB): _unpack_MonRegBB,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.B): _unpack_MonRegB,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.S): _unpack_MonRegS,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.G): _unpack_MonRegG,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.Y): _unpack_MonRegY,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.U): _unpack_MonRegU,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.I): _unpack_MonRegI,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.Status): _unpack_MonRegStatus,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.Parity): _unpack_MonRegParity,
-    (DATA_FLAG | AddressGroup.MonReg, MonReg.W): _unpack_MonRegW,
+    (DATA_FLAG | AddressGroup.MonChan, MonChan.FEXT): _unpack_MonChanFEXT,
+    (DATA_FLAG | AddressGroup.MonChan, MonChan.Restart): _unpack_MonChanRestart,
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Prog): _unpack_DSKYProg,
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Verb): _unpack_DSKYVerb,
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Noun): _unpack_DSKYNoun,
@@ -1998,19 +1986,6 @@ _unpack_reg_fns = {
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Reg3L): _unpack_DSKYReg3L,
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Reg3H): _unpack_DSKYReg3H,
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Status): _unpack_DSKYStatus,
-    (DATA_FLAG | AddressGroup.Status, Status.Alarms): _unpack_StatusAlarms,
-    (DATA_FLAG | AddressGroup.Status, Status.Peripheral): _unpack_StatusPeripheral,
-    (DATA_FLAG | AddressGroup.Status, Status.MonTemp): _unpack_StatusMonTemp,
-    (DATA_FLAG | AddressGroup.Status, Status.VccInt): _unpack_StatusVccInt,
-    (DATA_FLAG | AddressGroup.Status, Status.VccAux): _unpack_StatusVccAux,
-    (DATA_FLAG | AddressGroup.Status, Status.P3v3io): _unpack_StatusP3v3io,
-    (DATA_FLAG | AddressGroup.Status, Status.AgcTemp): _unpack_StatusAgcTemp,
-    (DATA_FLAG | AddressGroup.Status, Status.Bplssw): _unpack_StatusBplssw,
-    (DATA_FLAG | AddressGroup.Status, Status.P4sw): _unpack_StatusP4sw,
-    (DATA_FLAG | AddressGroup.Status, Status.MismatchAddr): _unpack_StatusMismatchAddr,
-    (DATA_FLAG | AddressGroup.Status, Status.MismatchData): _unpack_StatusMismatchData,
-    (DATA_FLAG | AddressGroup.MonChan, MonChan.FEXT): _unpack_MonChanFEXT,
-    (DATA_FLAG | AddressGroup.MonChan, MonChan.Restart): _unpack_MonChanRestart,
     (DATA_FLAG | AddressGroup.Control, Control.Stop): _unpack_ControlStop,
     (DATA_FLAG | AddressGroup.Control, Control.StopCause): _unpack_ControlStopCause,
     (DATA_FLAG | AddressGroup.Control, Control.MNHRPT): _unpack_ControlMNHRPT,
@@ -2039,15 +2014,40 @@ _unpack_reg_fns = {
     (DATA_FLAG | AddressGroup.Control, Control.NHALGA): _unpack_ControlNHALGA,
     (DATA_FLAG | AddressGroup.Control, Control.STRT1): _unpack_ControlSTRT1,
     (DATA_FLAG | AddressGroup.Control, Control.STRT2): _unpack_ControlSTRT2,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.A): _unpack_MonRegA,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.L): _unpack_MonRegL,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.Q): _unpack_MonRegQ,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.Z): _unpack_MonRegZ,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.BB): _unpack_MonRegBB,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.B): _unpack_MonRegB,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.S): _unpack_MonRegS,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.G): _unpack_MonRegG,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.Y): _unpack_MonRegY,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.U): _unpack_MonRegU,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.I): _unpack_MonRegI,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.Status): _unpack_MonRegStatus,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.Parity): _unpack_MonRegParity,
+    (DATA_FLAG | AddressGroup.MonReg, MonReg.W): _unpack_MonRegW,
+    (DATA_FLAG | AddressGroup.Status, Status.Alarms): _unpack_StatusAlarms,
+    (DATA_FLAG | AddressGroup.Status, Status.Peripheral): _unpack_StatusPeripheral,
+    (DATA_FLAG | AddressGroup.Status, Status.MonTemp): _unpack_StatusMonTemp,
+    (DATA_FLAG | AddressGroup.Status, Status.VccInt): _unpack_StatusVccInt,
+    (DATA_FLAG | AddressGroup.Status, Status.VccAux): _unpack_StatusVccAux,
+    (DATA_FLAG | AddressGroup.Status, Status.P3v3io): _unpack_StatusP3v3io,
+    (DATA_FLAG | AddressGroup.Status, Status.AgcTemp): _unpack_StatusAgcTemp,
+    (DATA_FLAG | AddressGroup.Status, Status.Bplssw): _unpack_StatusBplssw,
+    (DATA_FLAG | AddressGroup.Status, Status.P4sw): _unpack_StatusP4sw,
+    (DATA_FLAG | AddressGroup.Status, Status.MismatchAddr): _unpack_StatusMismatchAddr,
+    (DATA_FLAG | AddressGroup.Status, Status.MismatchData): _unpack_StatusMismatchData,
 }
 
 _unpack_mem_fns = {
-    (DATA_FLAG | AddressGroup.SimErasable): _unpack_SimErasable,
-    (DATA_FLAG | AddressGroup.Trace): _unpack_Trace,
-    (DATA_FLAG | AddressGroup.Fixed): _unpack_Fixed,
-    (DATA_FLAG | AddressGroup.SimFixed): _unpack_SimFixed,
     (DATA_FLAG | AddressGroup.Channels): _unpack_Channels,
+    (DATA_FLAG | AddressGroup.SimFixed): _unpack_SimFixed,
     (DATA_FLAG | AddressGroup.Erasable): _unpack_Erasable,
+    (DATA_FLAG | AddressGroup.Fixed): _unpack_Fixed,
+    (DATA_FLAG | AddressGroup.Trace): _unpack_Trace,
+    (DATA_FLAG | AddressGroup.SimErasable): _unpack_SimErasable,
 }
 
 def _pack_write_msg(group, addr, data):

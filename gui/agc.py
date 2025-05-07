@@ -134,7 +134,7 @@ def disassemble_inst(b, count):
     if count:
         up = sq >> 3
         down = (sq >> 2) & 0o1
-        name = COUNTERS[es]
+        name = COUNTERS[es] if es in COUNTERS else ''
         if name in ('TIME2', 'TIME1', 'TIME3', 'TIME4', 'TIME5'):
             return 'PINC', name
         elif name in ('TIME6', 'GYROCMD', 'CDUXCMD', 'CDUYCMD', 'CDUZCMD', 'CDUTCMD', 'CDUSCMD', 'THRUST', 'LEMONM'):

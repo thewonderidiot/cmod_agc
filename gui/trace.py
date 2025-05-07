@@ -53,7 +53,7 @@ class Trace(QFrame):
                 self._table.item(r, 4).setText(addr)
                 self._table.item(r, 5).setText('%06o' % self._w[idx])
 
-                if ((idx + 1) % 1024) == 0 and self._dump_idx != TRACE_DEPTH:
+                if ((idx + 1) % 256) == 0 and self._dump_idx != TRACE_DEPTH:
                     self._dump_trace_data()
 
     def _dump_trace(self):
@@ -70,13 +70,13 @@ class Trace(QFrame):
         self._dump_trace_data()
 
     def _dump_trace_data(self):
-        for i in range(self._dump_idx, self._dump_idx + 1024):
+        for i in range(self._dump_idx, self._dump_idx + 256):
             self._usbif.send(um.ReadTrace(addr=(i | 0x0000)))
             self._usbif.send(um.ReadTrace(addr=(i | 0x4000)))
             self._usbif.send(um.ReadTrace(addr=(i | 0x8000)))
             self._usbif.send(um.ReadTrace(addr=(i | 0xC000)))
 
-        self._dump_idx += 1024
+        self._dump_idx += 256
 
     def _save_trace(self):
         filename, group = QFileDialog.getSaveFileName(self, 'Save Trace CSV', 'traces', 'AGC Trace CSVs (*.csv)')

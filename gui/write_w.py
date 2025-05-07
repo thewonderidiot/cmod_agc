@@ -32,17 +32,17 @@ TIME_SWITCHES = OrderedDict([
 
 PULSE_SWITCHES = OrderedDict([
     ('a', 'A'),
-    ('l', 'L'),
-    ('q', 'Q'),
     ('z', 'Z'),
-    ('rch', 'RCH'),
-    ('wch', 'WCH'),
-    ('g', 'G'),
-    ('b', 'B'),
+    ('q', 'Q'),
+    ('x', 'X'),
     ('y', 'Y'),
-    ('ru', 'RU'),
-    ('sp1', ''),
-    ('sp2', ''),
+    ('u', 'U'),
+    ('b', 'B'),
+    ('g', 'G'),
+    ('l', 'L'),
+    ('wch', 'WCH'),
+    ('rch', 'RCH'),
+    ('sp', ''),
 ])
 
 class WriteW(QWidget):

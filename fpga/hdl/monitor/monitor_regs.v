@@ -312,7 +312,7 @@ assign i = {br, st, msqext, sq};
 
 // Register W
 wire [11:0] agc_pulses;
-assign agc_pulses = {1'b0, 1'b0, mrulog, mwyg, mwbg, (mwg | mrgg), mwchg, mrchg, mwzg, mwqg, mwlg, mwag};
+assign agc_pulses = {1'b0, mrchg, mwchg, mwlg, (mwg | mrgg), mwbg, mrulog, mwyg, 1'b0, mwqg, mwzg, mwag};
 
 wire s_match;
 assign s_match = (w_s1_s2 ? s2_match : s1_match);

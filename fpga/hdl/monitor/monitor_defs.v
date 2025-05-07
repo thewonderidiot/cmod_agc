@@ -143,15 +143,16 @@
 `define W_MODE_P_S 3'o6
 
 `define W_PULSE_A   0
-`define W_PULSE_L   1
+`define W_PULSE_Z   1
 `define W_PULSE_Q   2
-`define W_PULSE_Z   3
-`define W_PULSE_RCH 4
-`define W_PULSE_WCH 5
-`define W_PULSE_G   6
-`define W_PULSE_B   7
-`define W_PULSE_Y   8
-`define W_PULSE_U   9
+`define W_PULSE_X   3
+`define W_PULSE_Y   4
+`define W_PULSE_U   5
+`define W_PULSE_B   6
+`define W_PULSE_G   7
+`define W_PULSE_L   8
+`define W_PULSE_WCH 9
+`define W_PULSE_RCH 10
 
 `define ADC_CHAN_TEMP   5'h00
 `define ADC_CHAN_VCCINT 5'h01

@@ -8,6 +8,14 @@ class BankS(QWidget):
         super().__init__(parent)
         self._usbif = usbif
         self._setup_ui()
+        usbif.connected.connect(self._connected)
+
+    def _connected(self, connected):
+        if connected:
+            self._set_bank_s()
+
+    def _set_bank_s(self, on=None):
+        self._usbif.send(um.WriteControlBankS(self._s_only.isChecked()))
 
     def _setup_ui(self):
         layout = QVBoxLayout(self)
@@ -31,10 +39,10 @@ class BankS(QWidget):
         bank_s.setStyleSheet('QRadioButton::indicator{subcontrol-position:center;}')
         layout.addWidget(bank_s, Qt.AlignTop | Qt.AlignCenter)
 
-        s_only = QRadioButton(self)
-        s_only.setStyleSheet('QRadioButton::indicator{subcontrol-position:center;}')
-        s_only.toggled.connect(lambda s: self._usbif.send(um.WriteControlBankS(s)))
-        layout.addWidget(s_only, Qt.AlignTop | Qt.AlignCenter)
+        self._s_only = QRadioButton(self)
+        self._s_only.setStyleSheet('QRadioButton::indicator{subcontrol-position:center;}')
+        self._s_only.toggled.connect(self._set_bank_s)
+        layout.addWidget(self._s_only, Qt.AlignTop | Qt.AlignCenter)
 
         l = QLabel('S ONLY', self)
         l.setAlignment(Qt.AlignCenter | Qt.AlignTop)

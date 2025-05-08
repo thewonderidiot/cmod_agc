@@ -13,9 +13,13 @@ class ReadLoad(QFrame):
 
         self._setup_ui()
 
-        usbif.send(um.WriteControlLoadReadS1S2(0, 0, 0, 0, 0))
+        usbif.connected.connect(self._connected)
 
-    def _update_s1_s2_switches(self, state):
+    def _connected(self, connected):
+        if connected:
+            self._update_s1_s2_switches()
+
+    def _update_s1_s2_switches(self, state=None):
         switch_states = {switch: self._s1_s2_switches[switch].isChecked() for switch in self._s1_s2_switches.keys()}
         self._usbif.send(um.WriteControlLoadReadS1S2(**switch_states))
 

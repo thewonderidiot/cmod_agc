@@ -20,6 +20,14 @@ class WComparator(QWidget):
 
         self._setup_ui()
 
+        usbif.connected.connect(self._connected)
+
+    def _connected(self, connected):
+        if connected:
+            self._send_cmp_val()
+            self._send_ign_val()
+            self._send_parity()
+
     def _setup_ui(self):
         # Set up our basic layout
         layout = QHBoxLayout(self)
@@ -56,7 +64,7 @@ class WComparator(QWidget):
         font.setPointSize(10)
         self._val_box.setFont(font)
         self._val_box.setAlignment(Qt.AlignCenter)
-        
+
         # Add some spacing to account for lack of parity indicators
         layout.addSpacing(40)
 
@@ -64,11 +72,11 @@ class WComparator(QWidget):
         val = self._get_switch_value(self._w_cmp_switches, False)
         self._usbif.send(um.WriteControlWCompVal(val))
 
-    def _send_ign_val(self, state):
+    def _send_ign_val(self, state=None):
         ignore = self._get_switch_value(self._w_ign_switches, False)
         self._usbif.send(um.WriteControlWCompIgnore(ignore))
 
-    def _send_parity(self, state):
+    def _send_parity(self, state=None):
         parity = self._get_switch_value(self._par_cmp_switches, False)
         ignore = self._get_switch_value(self._par_ign_switches, False)
         self._usbif.send(um.WriteControlWCompParity(parity=parity, ignore=ignore))

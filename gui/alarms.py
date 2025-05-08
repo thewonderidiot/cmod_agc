@@ -32,13 +32,24 @@ class Alarms(QFrame):
 
         usbif.poll(um.ReadStatusAlarms())
         usbif.listen(self)
+        usbif.connected.connect(self._connected)
 
-        self._reset_alarms()
+    def _connected(self, connected):
+        if connected:
+            self._reset_alarms()
+            self._send_doscal()
+            self._send_dbltst()
 
     def handle_msg(self, msg):
         if isinstance(msg, um.StatusAlarms):
             for v in self._alarm_inds.keys():
                 self._alarm_inds[v].set_on(getattr(msg, v))
+
+    def _send_doscal(self, on=None):
+        self._usbif.send(um.WriteControlDoscal(self._doscal.isChecked()))
+
+    def _send_dbltst(self, on=None):
+        self._usbif.send(um.WriteControlDbltst(self._dbltst.isChecked()))
 
     def _reset_alarms(self):
         z = (1,) * len(ALARMS)
@@ -58,19 +69,19 @@ class Alarms(QFrame):
             self._create_alarm(n, c, layout, col)
             col += 1
 
-        check = QCheckBox(self)
-        check.setFixedSize(20,20)
-        check.setStyleSheet('QCheckBox::indicator{subcontrol-position:center;}')
-        layout.addWidget(check, 2, 2)
-        layout.setAlignment(check, Qt.AlignCenter)
-        check.stateChanged.connect(lambda state: self._usbif.send(um.WriteControlDoscal(bool(state))))
+        self._doscal = QCheckBox(self)
+        self._doscal.setFixedSize(20,20)
+        self._doscal.setStyleSheet('QCheckBox::indicator{subcontrol-position:center;}')
+        layout.addWidget(self._doscal, 2, 2)
+        layout.setAlignment(self._doscal, Qt.AlignCenter)
+        self._doscal.stateChanged.connect(self._send_doscal)
 
-        check = QCheckBox(self)
-        check.setFixedSize(20,20)
-        check.setStyleSheet('QCheckBox::indicator{subcontrol-position:center;}')
-        layout.addWidget(check, 2, 3)
-        layout.setAlignment(check, Qt.AlignCenter)
-        check.stateChanged.connect(lambda state: self._usbif.send(um.WriteControlDbltst(bool(state))))
+        self._dbltst = QCheckBox(self)
+        self._dbltst.setFixedSize(20,20)
+        self._dbltst.setStyleSheet('QCheckBox::indicator{subcontrol-position:center;}')
+        layout.addWidget(self._dbltst, 2, 3)
+        layout.setAlignment(self._dbltst, Qt.AlignCenter)
+        self._dbltst.stateChanged.connect(self._send_dbltst)
 
         b = QPushButton(self)
         b.setFixedSize(20,20)

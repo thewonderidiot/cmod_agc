@@ -22,6 +22,11 @@ class ErasableMemSim(QFrame):
         self._core_dumper = MemoryDump(usbif, um.ReadErasable, um.Erasable, 0o10, 256, self._bank_switches)
         self._core_loader.finished.connect(self._dump_complete)
 
+        usbif.connected.connect(self._connected)
+
+    def _connected(self, connected):
+        self._set_all(False)
+
     def _setup_ui(self):
         self.setFrameStyle(QFrame.Panel | QFrame.Raised)
 

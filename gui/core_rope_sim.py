@@ -21,6 +21,11 @@ class CoreRopeSim(QFrame):
         self._rope_dumper = MemoryDump(usbif, um.ReadFixed, um.Fixed, 0o44, 1024, self._bank_switches)
         self._rope_loader.finished.connect(self._dump_complete)
 
+        usbif.connected.connect(self._connected)
+
+    def _connected(self):
+        self._set_all(False)
+
     def _setup_ui(self):
         self.setFrameStyle(QFrame.Panel | QFrame.Raised)
 

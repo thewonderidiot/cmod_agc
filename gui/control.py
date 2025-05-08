@@ -32,9 +32,15 @@ class Control(QFrame):
         usbif.poll(um.ReadControlStopCause())
         usbif.poll(um.ReadStatusPeripheral())
         usbif.listen(self)
+        usbif.connected.connect(self._connected)
 
-        for msg in INH_SWITCHES.values():
-            usbif.send(msg(0))
+    def _connected(self, connected):
+        if connected:
+            self._set_all_inh()
+
+    def _set_all_inh(self):
+        for sw,msg in zip(self._inh_switches, INH_SWITCHES.values()):
+            self._usbif.send(msg(sw.isChecked()))
 
     def handle_msg(self, msg):
         if isinstance(msg, um.MonRegStatus):

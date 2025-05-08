@@ -8,7 +8,8 @@ from qtpy.QtSerialPort import QSerialPort, QSerialPortInfo
 from slip import slip, unslip, unslip_from
 import usb_msg as um
 
-POLL_PERIOD_MS = 5
+POLL_PERIOD_CONNECTED_MS = 5
+POLL_PERIOD_UNCONNECTED_MS = 500
 
 class USBInterface(QObject):
     msg_received = Signal(object)
@@ -25,7 +26,8 @@ class USBInterface(QObject):
 
         self._timer = QTimer(None)
         self._timer.timeout.connect(self._service)
-        self._timer.start(POLL_PERIOD_MS)
+        self._timer.start(POLL_PERIOD_UNCONNECTED_MS)
+        self._last_error = None
 
     def send(self, msg):
         self._tx_queue.put(msg)
@@ -97,12 +99,17 @@ class USBInterface(QObject):
 
             # Mark ourselves connected
             self.connected.emit(True)
+            self._timer.start(POLL_PERIOD_CONNECTED_MS)
 
         except Exception as e:
-            print(e)
+            e_str = str(e)
+            if e_str != self._last_error:
+                print(e)
+            self._last_error = e_str
 
     def _error(self, error):
         print(error)
+        self._last_error = str(error)
         self._disconnect()
 
     def _disconnect(self):
@@ -111,3 +118,4 @@ class USBInterface(QObject):
         # self._dev.deleteLater()
         self.connected.emit(False)
         self._dev = None
+        self._timer.start(POLL_PERIOD_UNCONNECTED_MS)

@@ -32,15 +32,18 @@ class CompStop(QFrame):
 
         usbif.poll(um.ReadControlStopCause())
         usbif.listen(self)
-        z = (0,)*(len(STOP_CONDS) + 1)
-        usbif.send(um.WriteControlStop(*z))
+        usbif.connected.connect(self._connected)
+
+    def _connected(self, connected):
+        if connected:
+            self._set_stop_conds()
 
     def handle_msg(self, msg):
         if isinstance(msg, um.ControlStopCause):
             for v in STOP_CONDS.values():
                 self._stop_inds[v].set_on(getattr(msg, v))
 
-    def _set_stop_conds(self, on):
+    def _set_stop_conds(self, on=None):
         settings = {s: self._stop_switches[s].isChecked() for s in STOP_CONDS.values()}
         settings['s1_s2'] = self._s2.isChecked()
         self._usbif.send(um.WriteControlStop(**settings))

@@ -56,25 +56,26 @@ class WriteW(QWidget):
 
         self._setup_ui()
 
-        usbif.send(um.WriteControlWriteW(mode=um.WriteWMode.ALL, s1_s2=0))
+        usbif.connected.connect(self._connected)
 
-        z = (0,)*len(TIME_SWITCHES)
-        usbif.send(um.WriteControlTimeSwitches(*z))
-        z = (0,)*len(PULSE_SWITCHES)
-        usbif.send(um.WriteControlPulseSwitches(*z))
+    def _connected(self, connected):
+        if connected:
+            self._send_mode()
+            self._send_times()
+            self._send_pulses()
 
     def _update_mode(self, mode):
         self._mode = mode
-        self._send_mode(self._s2.isChecked())
+        self._send_mode()
 
-    def _send_mode(self, s1_s2):
-        self._usbif.send(um.WriteControlWriteW(mode=self._mode, s1_s2=s1_s2))
+    def _send_mode(self, s1_s2=None):
+        self._usbif.send(um.WriteControlWriteW(mode=self._mode, s1_s2=self._s2.isChecked()))
 
-    def _send_times(self, state):
+    def _send_times(self, state=None):
         time_states = {s: self._time_switches[s].isChecked() for s in self._time_switches.keys()}
         self._usbif.send(um.WriteControlTimeSwitches(**time_states))
 
-    def _send_pulses(self, state):
+    def _send_pulses(self, state=None):
         pulse_states = {s: self._pulse_switches[s].isChecked() for s in self._pulse_switches.keys()}
         self._usbif.send(um.WriteControlPulseSwitches(**pulse_states))
 

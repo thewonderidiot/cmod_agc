@@ -23,22 +23,28 @@ class IComparator(QWidget):
 
         self._updating_switches = False
 
-        self._br = 0
-        self._st = 0
-        self._sqext = 0
-        self._sq = 0
-
-        self._br_ign = 0
-        self._st_ign = 0
-        self._sqext_ign = 0
-        self._sq_ign = 0
+        self._reset_state()
 
         self._setup_ui()
 
-        usbif.send(um.WriteControlICompVal(0, 0, 0, 0))
-        usbif.send(um.WriteControlICompIgnore(0, 0, 0, 0))
-        z = (0,)*(len(STATUS_INDS) * 2)
-        self._usbif.send(um.WriteControlICompStatus(*z))
+        usbif.connected.connect(self._connected)
+
+    def _reset_state(self):
+        self._br = None
+        self._st = None
+        self._sqext = None
+        self._sq = None
+
+        self._br_ign = None
+        self._st_ign = None
+        self._sqext_ign = None
+        self._sq_ign = None
+
+    def _connected(self, connected):
+        if connected:
+            self._reset_state()
+            self._update_status()
+            self._update_inst()
 
     def _setup_ui(self):
         # Set up our basic layout

@@ -11,6 +11,9 @@ class SComparator(QWidget):
         super().__init__(parent)
         self._usbif = usbif
 
+        self._reset_state()
+        self._updating_switches = False
+
         self._setup_ui(num)
 
         self._write_s_msg = getattr(um, 'WriteControlS%uS' % num)
@@ -18,10 +21,22 @@ class SComparator(QWidget):
         self._write_s_ign_msg = getattr(um, 'WriteControlS%uSIgnore' % num)
         self._write_bank_ign_msg = getattr(um, 'WriteControlS%uBankIgnore' % num)
 
-        usbif.send(self._write_s_msg(s=0))
-        usbif.send(self._write_bank_msg(eb=0, fb=0, fext=0))
-        usbif.send(self._write_s_ign_msg(s=0))
-        usbif.send(self._write_bank_ign_msg(eb=0, fb=0, fext=0))
+        usbif.connected.connect(self._connected)
+
+    def _connected(self, connected):
+        if connected:
+            self._reset_state()
+            self._update_addr()
+
+    def _reset_state(self):
+        self._eb = None
+        self._eb_ign = None
+        self._fext = None
+        self._fext_ign = None
+        self._fb = None
+        self._fb_ign = None
+        self._s = None
+        self._s_ign = None
 
     def _setup_ui(self, num):
         # Set up our basic layout
@@ -39,17 +54,6 @@ class SComparator(QWidget):
         self._fb_ign_switches = []
         self._s_cmp_switches = []
         self._s_ign_switches = []
-
-        self._updating_switches = False
-
-        self._eb = 0
-        self._eb_ign = 0
-        self._fext = 0
-        self._fext_ign = 0
-        self._fb = 0
-        self._fb_ign = 0
-        self._s = 0
-        self._s_ign = 0
 
         eb, self._eb_cmp_box, self._eb_ign_box = self._create_reg(3, self._eb_cmp_switches, self._eb_ign_switches)
         fext, self._fext_cmp_box, self._fext_ign_box = self._create_reg(3, self._fext_cmp_switches, self._fext_ign_switches)

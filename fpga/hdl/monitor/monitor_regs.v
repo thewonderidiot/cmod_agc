@@ -47,6 +47,7 @@ module monitor_regs(
     input wire mnisq,
     input wire msp,
     input wire mgp_n,
+    input wire outcom,
 
     input wire mstp,
 
@@ -427,7 +428,7 @@ always @(*) begin
         `MON_REG_Y:      data_out = y;
         `MON_REG_W:      data_out = w;
         `MON_REG_I:      data_out = {4'b0, i};
-        `MON_REG_STATUS: data_out = {11'b0, minkl, minhl, miip, mstpit_n, mgojam}; // FIXME: add OUTCOM
+        `MON_REG_STATUS: data_out = {10'b0, outcom, minkl, minhl, miip, mstpit_n, mgojam};
         `MON_REG_PAR:    data_out = {12'b0, wp, gp};
         default:         data_out = 16'b0;
         endcase

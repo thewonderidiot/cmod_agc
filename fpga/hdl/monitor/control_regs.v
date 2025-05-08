@@ -36,6 +36,10 @@ module control_regs(
     input wire minkl,
     input wire minhl,
     input wire miip,
+    input wire mload,
+    input wire mldch,
+    input wire mread,
+    input wire mrdch,
 
     input wire [16:1] w,
     input wire [1:0] wp,
@@ -124,7 +128,7 @@ reg [6:0] i_comp_stat;
 reg [6:0] i_comp_stat_ign;
 
 wire [6:0] stat;
-assign stat = {1'b0, 1'b0, 1'b0, 1'b0, minkl, minhl, miip}; // FIXME: Add LD/RD status bits
+assign stat = {mrdch, mread, mldch, mload, minkl, minhl, miip};
 
 wire i_val_match;
 wire i_stat_match;

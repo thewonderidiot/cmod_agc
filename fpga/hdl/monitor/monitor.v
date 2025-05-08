@@ -49,6 +49,7 @@ module monitor(
     input wire mnisq,
     input wire msp,
     input wire mgp_n,
+    input wire outcom,
 
     input wire mvfail_n,
     input wire moscal_n,
@@ -322,6 +323,10 @@ control_regs ctrl_regs(
     .minkl(minkl),
     .minhl(minhl),
     .miip(miip),
+    .mload(mload),
+    .mldch(mldch),
+    .mread(mread),
+    .mrdch(mrdch),
 
     .w(w),
     .wp(wp),
@@ -502,6 +507,7 @@ monitor_regs mon_regs(
     .mnisq(mnisq),
     .msp(msp),
     .mgp_n(mgp_n),
+    .outcom(outcom),
 
     .mstp(mstp),
 

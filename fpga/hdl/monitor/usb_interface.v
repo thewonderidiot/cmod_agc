@@ -107,7 +107,7 @@ wire read_byte_fifo_full;
 wire read_byte_fifo_empty;
 wire read_byte_fifo_almost_empty;
 
-// Output byte from the read byte FIFO to the USB interface FIXME
+// Output byte from the read byte FIFO to the USB interface
 wire [7:0] tx_byte;
 wire tx_byte_read_en;
 

@@ -27,9 +27,9 @@ class Measurements(QFrame):
         elif isinstance(msg, um.StatusMonTemp):
             self._mon_temp.setText('%.02f C' % self._convert_mon_temp(msg.counts))
         elif isinstance(msg, um.StatusAgcA15):
-            self._agc_a15.setText('%.02f V' % self._convert_agc_volts(msg.counts))
+            self._agc_a15.setText('%.02f V' % self._convert_agc_volts(msg.counts, 30e3))
         elif isinstance(msg, um.StatusAgcA16):
-            self._agc_a16.setText('%.02f V' % self._convert_agc_volts(msg.counts))
+            self._agc_a16.setText('%.02f V' % self._convert_agc_volts(msg.counts, 13e3))
 
     def _convert_mon_temp(self, counts):
         # Taken from UG480 p.33
@@ -39,8 +39,8 @@ class Measurements(QFrame):
         # Taken from UG480 p.34
         return (counts / 4096.0) * 3
 
-    def _convert_agc_volts(self, counts):
-        return (counts / 4096.0) * 3.32
+    def _convert_agc_volts(self, counts, rin):
+        return (counts / 4096.0) * (1000+2320+rin)/1000.0
 
     def _setup_ui(self):
         self.setFrameStyle(QFrame.Panel | QFrame.Raised)
@@ -57,8 +57,8 @@ class Measurements(QFrame):
         self._vccaux = self._create_meas('VCCAUX', layout, 3, 0, False)
 
         self._create_header('AGC', layout, 2)
-        self._agc_a15 = self._create_meas('A15', layout, 1, 2, True)
-        self._agc_a16 = self._create_meas('A16', layout, 2, 2, False)
+        self._agc_a15 = self._create_meas('28V', layout, 1, 2, True)
+        self._agc_a16 = self._create_meas('14V', layout, 2, 2, False)
 
         label = QLabel('MEASUREMENTS', self)
         font = label.font()

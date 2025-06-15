@@ -2,6 +2,7 @@ from qtpy.QtWidgets import QMainWindow, QHBoxLayout, QLabel, QWidget
 from monitor_panel import MonitorPanel
 from alarm_mem_panel import AlarmMemPanel
 from usb_interface import USBInterface
+from cdu_control import CDUControl
 from dsky import DSKY
 import resources
 
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow):
         # Set up the UI
         self._setup_ui()
         self._dsky = DSKY(self, self._usbif)
+        self._cdu = CDUControl(self, self._usbif)
 
     def _setup_ui(self):
         # Create a status bar widget to display connection state

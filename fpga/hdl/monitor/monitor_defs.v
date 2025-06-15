@@ -23,6 +23,7 @@
 `define ADDR_GROUP_STATUS       7'h24
 `define ADDR_GROUP_TRACE        7'h25
 `define ADDR_GROUP_NASSP        7'h26
+`define ADDR_GROUP_CDU          7'h27
 
 // Control Registers
 `define CTRL_REG_START        16'h0
@@ -132,6 +133,14 @@
 `define NASSP_REG_THRUST   16'h35
 `define NASSP_REG_ALTM     16'h36
 
+`define CDU_REG_CDUX  16'h00
+`define CDU_REG_CDUY  16'h01
+`define CDU_REG_CDUZ  16'h02
+`define CDU_REG_CDUT  16'h03
+`define CDU_REG_CDUS  16'h04
+`define CDU_REG_TLOSS 16'h05
+`define CDU_REG_PHASE 16'h06
+
 `define W_MODE_ALL 3'o0
 `define W_MODE_S   3'o1
 `define W_MODE_I   3'o2
@@ -181,6 +190,11 @@
 `define SR      12'o0021
 `define CYL     12'o0022
 `define EDOP    12'o0023
+`define CDUX    12'o0032
+`define CDUY    12'o0033
+`define CDUZ    12'o0034
+`define CDUT    12'o0035
+`define CDUS    12'o0036
 `define PIPAX   12'o0037
 `define PIPAY   12'o0040
 `define PIPAZ   12'o0041

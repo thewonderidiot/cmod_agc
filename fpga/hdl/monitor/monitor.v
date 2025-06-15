@@ -63,6 +63,9 @@ module monitor(
     input wire mpipal_n,
     input wire mwarnf_n,
 
+    input wire n800SET,
+    input wire n800RST,
+
     output wire mnhsbf,
     output wire mamu,
     output wire [16:1] mdt,
@@ -87,6 +90,9 @@ module monitor(
     output wire monwbk,
     input wire mreqin,
     input wire mtcsa_n,
+
+    output wire atca800SET,
+    output wire atca800RST,
 
     output wire [6:1] leds,
     output wire [6:1] dbg
@@ -191,10 +197,15 @@ wire nassp_write_en;
 wire nassp_write_done;
 wire [15:0] nassp_data;
 
+wire cdu_read_en;
+wire cdu_write_en;
+wire cdu_write_done;
+wire [15:0] cdu_data;
+
 // Resulting data from the active read command
 wire [15:0] read_data;
 assign read_data = ctrl_data | status_data | mon_reg_data | mon_chan_data | agc_fixed_data | agc_erasable_data |
-                   agc_channels_data | crs_data | ems_data | mon_dsky_data | trace_data | nassp_data;
+                   agc_channels_data | crs_data | ems_data | mon_dsky_data | trace_data | nassp_data | cdu_data;
 
 // Command controller 
 cmd_controller cmd_ctrl(
@@ -234,7 +245,10 @@ cmd_controller cmd_ctrl(
     .trace_read_en(trace_read_en),
     .nassp_read_en(nassp_read_en),
     .nassp_write_en(nassp_write_en),
-    .nassp_write_done(nassp_write_done)
+    .nassp_write_done(nassp_write_done),
+    .cdu_read_en(cdu_read_en),
+    .cdu_write_en(cdu_write_en),
+    .cdu_write_done(cdu_write_done)
 );
 
 /*******************************************************************************.
@@ -1001,6 +1015,34 @@ nassp_bridge nassp(
     .periph_bb(nassp_periph_bb),
     .periph_data(nassp_periph_data),
     .periph_complete(periph_complete)
+);
+
+/*******************************************************************************.
+* CDU Control                                                                   *
+'*******************************************************************************/
+cdu_control cdu(
+    .clk(clk),
+    .rst_n(rst_n),
+
+    .read_en(cdu_read_en),
+    .write_en(cdu_write_en),
+    .write_done(cdu_write_done),
+    .addr(cmd_addr),
+    .data_in(cmd_data),
+    .data_out(cdu_data),
+
+    .e_cycle_starting(e_cycle_starting),
+    .e_cycle_addr(e_cycle_addr),
+
+    .minkl(minkl),
+    .mt(mt),
+    .g(g),
+
+    .n800SET(n800SET),
+    .n800RST(n800RST),
+
+    .atca800SET(atca800SET),
+    .atca800RST(atca800RST)
 );
 
 assign mnhsbf = mnhsbf_crs | mnhsbf_rupts;

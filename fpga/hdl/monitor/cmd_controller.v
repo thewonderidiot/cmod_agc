@@ -70,7 +70,12 @@ module cmd_controller(
     // NASSP bridge signals
     output reg nassp_read_en,
     output reg nassp_write_en,
-    input wire nassp_write_done
+    input wire nassp_write_done,
+
+    // CDU control signals
+    output reg cdu_read_en,
+    output reg cdu_write_en,
+    input wire cdu_write_done
 );
 
 /*******************************************************************************.
@@ -89,6 +94,7 @@ localparam IDLE          = 0,
            MON_DSKY      = 10,
            TRACE         = 11,
            NASSP         = 12,
+           CDU           = 13,
            SEND_READ_MSG = 15;
 
 reg [3:0] state;
@@ -154,6 +160,8 @@ always @(*) begin
     trace_read_en = 1'b0;
     nassp_read_en = 1'b0;
     nassp_write_en = 1'b0;
+    cdu_read_en = 1'b0;
+    cdu_write_en = 1'b0;
 
     case (state)
     IDLE: begin
@@ -175,6 +183,7 @@ always @(*) begin
             `ADDR_GROUP_MON_DSKY:     next_state = MON_DSKY;
             `ADDR_GROUP_TRACE:        next_state = TRACE;
             `ADDR_GROUP_NASSP:        next_state = NASSP;
+            `ADDR_GROUP_CDU:          next_state = CDU;
             default:                  next_state = IDLE;
             endcase
         end
@@ -315,6 +324,19 @@ always @(*) begin
             end
         end else begin
             nassp_read_en = 1'b1;
+            next_state = SEND_READ_MSG;
+        end
+    end
+
+    CDU: begin
+        if (cmd_write_flag) begin
+            if (cdu_write_done) begin
+                next_state = IDLE;
+            end else begin
+                cdu_write_en = 1'b1;
+            end
+        end else begin
+            cdu_read_en = 1'b1;
             next_state = SEND_READ_MSG;
         end
     end

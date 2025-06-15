@@ -21,6 +21,36 @@ def unpack(msg_bytes):
     else:
         return _unpack_reg_fns[(group, addr)](data)
 
+ReadCDUCduX = namedtuple('ReadCDUCduX', [])
+ReadCDUCduX.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+CDUCduX = namedtuple('CDUCduX', ['value'])
+CDUCduX.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadCDUCduY = namedtuple('ReadCDUCduY', [])
+ReadCDUCduY.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+CDUCduY = namedtuple('CDUCduY', ['value'])
+CDUCduY.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadCDUCduZ = namedtuple('ReadCDUCduZ', [])
+ReadCDUCduZ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+CDUCduZ = namedtuple('CDUCduZ', ['value'])
+CDUCduZ.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadCDUCduT = namedtuple('ReadCDUCduT', [])
+ReadCDUCduT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+CDUCduT = namedtuple('CDUCduT', ['value'])
+CDUCduT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadCDUCduS = namedtuple('ReadCDUCduS', [])
+ReadCDUCduS.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+CDUCduS = namedtuple('CDUCduS', ['value'])
+CDUCduS.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadCDUTLoss = namedtuple('ReadCDUTLoss', [])
+ReadCDUTLoss.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+CDUTLoss = namedtuple('CDUTLoss', ['tloss'])
+CDUTLoss.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadCDUPhase = namedtuple('ReadCDUPhase', [])
+ReadCDUPhase.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+CDUPhase = namedtuple('CDUPhase', ['phase'])
+CDUPhase.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+WriteCDUPhase = namedtuple('WriteCDUPhase', ['phase'])
+WriteCDUPhase.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadChannels = namedtuple('ReadChannels', ['addr'])
 ReadChannels.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 Channels = namedtuple('Channels', ['addr', 'data'])
@@ -497,6 +527,7 @@ StatusMismatchData = namedtuple('StatusMismatchData', ['data'])
 StatusMismatchData.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 
 class AddressGroup(object):
+    CDU = 0x27
     Channels = 0x02
     SimFixed = 0x11
     NASSP = 0x26
@@ -510,6 +541,14 @@ class AddressGroup(object):
     SimErasable = 0x10
     Status = 0x24
 
+class CDU(object):
+    CduX = 0x0000
+    CduY = 0x0001
+    CduZ = 0x0002
+    CduT = 0x0003
+    CduS = 0x0004
+    TLoss = 0x0005
+    Phase = 0x0006
 class NASSP(object):
     Ch10 = 0x0000
     Ch30 = 0x0001
@@ -627,6 +666,32 @@ class WriteWMode:
     P = 4
     P_I = 5
     P_S = 6
+
+def _pack_ReadCDUCduX(msg):
+    return _pack_read_msg(AddressGroup.CDU, CDU.CduX)
+
+def _pack_ReadCDUCduY(msg):
+    return _pack_read_msg(AddressGroup.CDU, CDU.CduY)
+
+def _pack_ReadCDUCduZ(msg):
+    return _pack_read_msg(AddressGroup.CDU, CDU.CduZ)
+
+def _pack_ReadCDUCduT(msg):
+    return _pack_read_msg(AddressGroup.CDU, CDU.CduT)
+
+def _pack_ReadCDUCduS(msg):
+    return _pack_read_msg(AddressGroup.CDU, CDU.CduS)
+
+def _pack_ReadCDUTLoss(msg):
+    return _pack_read_msg(AddressGroup.CDU, CDU.TLoss)
+
+def _pack_ReadCDUPhase(msg):
+    return _pack_read_msg(AddressGroup.CDU, CDU.Phase)
+
+def _pack_WriteCDUPhase(msg):
+    data = 0x0000
+    data |= (msg.phase & 0xFFFF) << 0
+    return _pack_write_msg(AddressGroup.CDU, CDU.Phase, data)
 
 def _pack_ReadChannels(msg):
     return _pack_read_msg(AddressGroup.Channels, msg.addr)
@@ -1344,6 +1409,41 @@ def _pack_ReadStatusMismatchData(msg):
     return _pack_read_msg(AddressGroup.Status, Status.MismatchData)
 
 
+def _unpack_CDUCduX(data):
+    return CDUCduX(
+        value = (data >> 0) & 0x7FFF,
+    )
+
+def _unpack_CDUCduY(data):
+    return CDUCduY(
+        value = (data >> 0) & 0x7FFF,
+    )
+
+def _unpack_CDUCduZ(data):
+    return CDUCduZ(
+        value = (data >> 0) & 0x7FFF,
+    )
+
+def _unpack_CDUCduT(data):
+    return CDUCduT(
+        value = (data >> 0) & 0x7FFF,
+    )
+
+def _unpack_CDUCduS(data):
+    return CDUCduS(
+        value = (data >> 0) & 0x7FFF,
+    )
+
+def _unpack_CDUTLoss(data):
+    return CDUTLoss(
+        tloss = (data >> 0) & 0xFFFF,
+    )
+
+def _unpack_CDUPhase(data):
+    return CDUPhase(
+        phase = (data >> 0) & 0xFFFF,
+    )
+
 def _unpack_Channels(addr, data):
     return Channels(
         addr = addr,
@@ -1945,6 +2045,13 @@ def _unpack_StatusMismatchData(data):
 
 
 _unpack_reg_fns = {
+    (DATA_FLAG | AddressGroup.CDU, CDU.CduX): _unpack_CDUCduX,
+    (DATA_FLAG | AddressGroup.CDU, CDU.CduY): _unpack_CDUCduY,
+    (DATA_FLAG | AddressGroup.CDU, CDU.CduZ): _unpack_CDUCduZ,
+    (DATA_FLAG | AddressGroup.CDU, CDU.CduT): _unpack_CDUCduT,
+    (DATA_FLAG | AddressGroup.CDU, CDU.CduS): _unpack_CDUCduS,
+    (DATA_FLAG | AddressGroup.CDU, CDU.TLoss): _unpack_CDUTLoss,
+    (DATA_FLAG | AddressGroup.CDU, CDU.Phase): _unpack_CDUPhase,
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Ch10): _unpack_NASSPCh10,
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Ch30): _unpack_NASSPCh30,
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Ch31): _unpack_NASSPCh31,

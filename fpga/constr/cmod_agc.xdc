@@ -105,3 +105,6 @@ set_property IOSTANDARD LVCMOS33 [get_ports a15_p]
 set_property IOSTANDARD LVCMOS33 [get_ports a16_n]
 set_property IOSTANDARD LVCMOS33 [get_ports a16_p]
 set_property PACKAGE_PIN G2 [get_ports a15_n]
+
+set_property IOSTANDARD LVCMOS33 [get_ports rrpona_in]
+set_property PACKAGE_PIN M1 [get_ports rrpona_in]

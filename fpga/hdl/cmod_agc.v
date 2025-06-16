@@ -73,7 +73,7 @@ module cmod_agc(
     input wire imucag_in,
     input wire tempin_in,
     input wire isstor_in,
-
+    input wire rrpona_in,
 
     output wire COARSE,
     output wire ENERIM,
@@ -452,7 +452,7 @@ wire PIPAZp; //input
 reg ROLGOF = 0; //input
 reg RRIN0 = 0; //input
 reg RRIN1 = 0; //input
-reg RRPONA = 1; //input
+wire RRPONA; //input
 reg RRRLSC = 0; //input
 reg S4BSAB = 0; //input
 wire SBYBUT; //input
@@ -614,6 +614,7 @@ debounce #(1, 10) db16(prop_clk, rst_n, imufal_in, IMUFAL);
 debounce #(1, 10) db17(prop_clk, rst_n, imucag_in, IMUCAG);
 debounce #(1, 10) db18(prop_clk, rst_n, tempin_in, TEMPIN);
 debounce #(1, 10) db19(prop_clk, rst_n, isstor_in, ISSTOR);
+debounce #(1, 10) db20(prop_clk, rst_n, rrpona_in, RRPONA);
 
 assign IN3214 = SBYBUT;
 

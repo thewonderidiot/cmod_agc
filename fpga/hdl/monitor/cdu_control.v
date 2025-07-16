@@ -45,7 +45,7 @@ always @(posedge clk or negedge rst_n) begin
         target_addr <= 12'o0;
     end else begin
         if (target_addr == 12'o0) begin
-            if (e_cycle_starting & ((e_cycle_addr >= `CDUX) & (e_cycle_addr <= `CDUT))) begin
+            if (e_cycle_starting & ((e_cycle_addr >= `CDUX) & (e_cycle_addr <= `CDUS))) begin
                 target_addr <= e_cycle_addr;
             end
         end else begin

@@ -220,6 +220,30 @@ channel #(9'o33,15) chan_33(
     .val(chan33)
 );
 
+wire dntm_empty;
+wire [15:1] dntm;
+reg dlink_wr;
+reg dlink_wr_p;
+always @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
+        dlink_wr <= 1'b0;
+        dlink_wr_p <= 1'b0;
+    end else begin
+        dlink_wr <= mwchg && ((ch == 9'o34) || (ch == 9'o35));
+        dlink_wr_p <= dlink_wr;
+    end
+end
+
+downlink_fifo downlink_fifo1(
+    .clk(clk),
+    .srst(~rst_n),
+    .wr_en(dlink_wr && ~dlink_wr_p),
+    .din(mwl),
+    .rd_en(read_en_q && (addr == 9'o34)),
+    .dout(dntm),
+    .empty(dntm_empty)
+);
+
 wire [15:1] dntm1;
 channel #(9'o34,15) chan_34(
     .clk(clk),
@@ -275,8 +299,7 @@ always @(*) begin
         9'o031:  data_out = {1'b0, chan31};
         9'o032:  data_out = {1'b0, chan32};
         9'o033:  data_out = {1'b0, chan33};
-        9'o034:  data_out = {1'b0, dntm1};
-        9'o035:  data_out = {1'b0, dntm2};
+        9'o034:  data_out = {~dntm_empty, dntm};
         9'o077:  data_out = {1'b0, chan77};
         default: data_out = 16'b0;
         endcase

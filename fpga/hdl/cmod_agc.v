@@ -362,9 +362,9 @@ reg CDUYP = 0; //input
 reg CDUZM = 0; //input
 reg CDUZP = 0; //input
 reg CTLSAT = 0; //input
-reg DKBSNC = 0; //input
-reg DKEND = 0; //input
-reg DKSTRT = 0; //input
+wire DKBSNC; //input
+wire DKEND; //input
+wire DKSTRT; //input
 reg FLTOUT = 0;
 reg FREFUN = 0; //input
 reg GATEX_n = 1; //input
@@ -502,6 +502,39 @@ assign PIPAZm = PIPDAT && (moding_counter >= 3'd3);
 assign PIPAXp = PIPDAT && (moding_counter < 3'd3);
 assign PIPAYp = PIPDAT && (moding_counter < 3'd3);
 assign PIPAZp = PIPDAT && (moding_counter < 3'd3);
+
+// PCM simulation
+reg clk_p;
+reg [9:0] pcm_timer;
+reg [4:0] pcm_pulse_timer;
+reg [5:0] pcm_bit;
+always @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
+        clk_p <= 1'b0;
+        pcm_timer <= 15'd1023;
+        pcm_pulse_timer <= 5'd0;
+        pcm_bit <= 6'd42;
+    end else begin
+        clk_p <= CLK;
+        if (~clk_p && CLK) begin
+            if (pcm_pulse_timer < 5'd19) begin
+                pcm_pulse_timer <= pcm_pulse_timer + 5'd1;
+            end else begin
+                pcm_pulse_timer <= 5'd0;
+                pcm_timer <= pcm_timer + 10'd1;
+                if (pcm_timer == 10'd0) begin
+                    pcm_bit <= 6'd0;
+                end else if (pcm_bit < 6'd42) begin
+                    pcm_bit <= pcm_bit + 6'd1;
+                end
+            end
+        end
+    end
+end
+
+assign DKSTRT = (pcm_pulse_timer < 5'd4) && (pcm_bit == 6'd0);
+assign DKBSNC = (pcm_pulse_timer < 5'd4) && (pcm_bit > 6'd0) && (pcm_bit < 6'd41);
+assign DKEND  = (pcm_pulse_timer < 5'd4) && (pcm_bit == 6'd41);
 
 // STRT2 handling
 reg STRT2;

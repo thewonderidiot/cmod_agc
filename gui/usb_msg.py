@@ -125,6 +125,10 @@ ReadMonChanFEXT = namedtuple('ReadMonChanFEXT', [])
 ReadMonChanFEXT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 MonChanFEXT = namedtuple('MonChanFEXT', ['fext'])
 MonChanFEXT.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+ReadMonChanDownlink = namedtuple('ReadMonChanDownlink', [])
+ReadMonChanDownlink.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
+MonChanDownlink = namedtuple('MonChanDownlink', ['data', 'valid'])
+MonChanDownlink.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 ReadMonChanRestart = namedtuple('ReadMonChanRestart', [])
 ReadMonChanRestart.__eq__ = lambda a,b: (type(a) is type(b)) and (tuple(a) == tuple(b))
 MonChanRestart = namedtuple('MonChanRestart', ['parity_fail', 'parity_erasable', 'tc_trap', 'rupt_lock', 'night_watchman', 'voltage_fail', 'counter_fail', 'scaler_fail', 'scaler_double'])
@@ -526,6 +530,7 @@ class NASSP(object):
     Altm = 0x0036
 class MonChan(object):
     FEXT = 0x0007
+    Downlink = 0x001C
     Restart = 0x003F
 class DSKY(object):
     Prog = 0x0000
@@ -747,6 +752,9 @@ def _pack_ReadNASSPAltm(msg):
 
 def _pack_ReadMonChanFEXT(msg):
     return _pack_read_msg(AddressGroup.MonChan, MonChan.FEXT)
+
+def _pack_ReadMonChanDownlink(msg):
+    return _pack_read_msg(AddressGroup.MonChan, MonChan.Downlink)
 
 def _pack_ReadMonChanRestart(msg):
     return _pack_read_msg(AddressGroup.MonChan, MonChan.Restart)
@@ -1450,6 +1458,12 @@ def _unpack_MonChanFEXT(data):
         fext = (data >> 4) & 0x0007,
     )
 
+def _unpack_MonChanDownlink(data):
+    return MonChanDownlink(
+        data = (data >> 0) & 0x7FFF,
+        valid = (data >> 15) & 0x0001,
+    )
+
 def _unpack_MonChanRestart(data):
     return MonChanRestart(
         parity_fail = (data >> 0) & 0x0001,
@@ -1949,6 +1963,7 @@ _unpack_reg_fns = {
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Thrust): _unpack_NASSPThrust,
     (DATA_FLAG | AddressGroup.NASSP, NASSP.Altm): _unpack_NASSPAltm,
     (DATA_FLAG | AddressGroup.MonChan, MonChan.FEXT): _unpack_MonChanFEXT,
+    (DATA_FLAG | AddressGroup.MonChan, MonChan.Downlink): _unpack_MonChanDownlink,
     (DATA_FLAG | AddressGroup.MonChan, MonChan.Restart): _unpack_MonChanRestart,
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Prog): _unpack_DSKYProg,
     (DATA_FLAG | AddressGroup.DSKY, DSKY.Verb): _unpack_DSKYVerb,

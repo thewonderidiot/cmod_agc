@@ -36,6 +36,7 @@
 #    "/home/mike/cmod_agc/fpga/ip/read_fifo/read_fifo.xci"
 #    "/home/mike/cmod_agc/fpga/ip/cmd_fifo/cmd_fifo.xci"
 #    "/home/mike/cmod_agc/fpga/ip/prop_clk_div/prop_clk_div.xci"
+#    "/home/mike/cmod_agc/fpga/ip/downlink_fifo/downlink_fifo.xci"
 #    "/home/mike/cmod_agc/fpga/hdl/agc/components/MR0A16A.v"
 #    "/home/mike/cmod_agc/fpga/hdl/agc/components/SST39VF200A.v"
 #    "/home/mike/cmod_agc/fpga/hdl/agc/components/U74HC02.v"
@@ -110,6 +111,7 @@ proc checkRequiredFiles { origin_dir} {
  "[file normalize "$origin_dir/ip/cmd_fifo/cmd_fifo.xci"]"\
  "[file normalize "$origin_dir/ip/prop_clk_div/prop_clk_div.xci"]"\
  "[file normalize "$origin_dir/ip/mon_adc/mon_adc.xci"]"\
+ "[file normalize "$origin_dir/ip/downlink_fifo/downlink_fifo.xci"]"\
  "[file normalize "$origin_dir/hdl/agc/components/MR0A16A.v"]"\
  "[file normalize "$origin_dir/hdl/agc/components/SST39VF200A.v"]"\
  "[file normalize "$origin_dir/hdl/agc/components/U74HC02.v"]"\
@@ -309,6 +311,7 @@ set files [list \
  [file normalize "${origin_dir}/ip/cmd_fifo/cmd_fifo.xci"] \
  [file normalize "${origin_dir}/ip/prop_clk_div/prop_clk_div.xci"] \
  [file normalize "${origin_dir}/ip/mon_adc/mon_adc.xci"] \
+ [file normalize "${origin_dir}/ip/downlink_fifo/downlink_fifo.xci"] \
  [file normalize "${origin_dir}/hdl/agc/components/MR0A16A.v"] \
  [file normalize "${origin_dir}/hdl/agc/components/SST39VF200A.v"] \
  [file normalize "${origin_dir}/hdl/agc/components/U74HC02.v"] \
@@ -444,6 +447,15 @@ if { ![get_property "is_locked" $file_obj] } {
 }
 
 set file "$origin_dir/ip/prop_clk_div/prop_clk_div.xci"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
+set_property -name "registered_with_manager" -value "1" -objects $file_obj
+if { ![get_property "is_locked" $file_obj] } {
+  set_property -name "synth_checkpoint_mode" -value "Singular" -objects $file_obj
+}
+
+set file "$origin_dir/ip/downlink_fifo/downlink_fifo.xci"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj

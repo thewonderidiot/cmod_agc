@@ -1,7 +1,7 @@
 BUILD_DIR=$(shell pwd)/build/
 SRC_DIR = $(shell pwd)/fpga/
 
-# Supported build types: AGC, CDU
+# Supported build types: AGC, CDU, DSKY, DSKY_COMMS
 BUILD_TYPE = AGC
 ROPE = Luminary099
 CORE = l99_p63

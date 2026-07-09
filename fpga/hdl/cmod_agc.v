@@ -13,6 +13,52 @@ module cmod_agc(
     input wire a16_p,
     input wire a16_n,
 
+`ifdef DSKY_INTERFACE
+    input wire mainrs_in,
+    input wire mkey1_in,
+    input wire mkey2_in,
+    input wire mkey3_in,
+    input wire mkey4_in,
+    input wire mkey5_in,
+    input wire caurst_in,
+    input wire sbybut_in,
+
+    output wire RLYB01,
+    output wire RLYB02,
+    output wire RLYB03,
+    output wire RLYB04,
+    output wire RLYB05,
+    output wire RLYB06,
+    output wire RLYB07,
+    output wire RLYB08,
+    output wire RLYB09,
+    output wire RLYB10,
+    output wire RLYB11,
+    output wire RYWD12,
+    output wire RYWD13,
+    output wire RYWD14,
+    output wire RYWD16,
+    output wire COMACT,
+    output wire ELSNCM,
+    output wire KYRLS,
+    output wire OPEROR,
+    output wire RESTRT,
+    output wire SBYLIT,
+    output wire TMPCAU,
+    output wire UPLACT,
+    output wire VNFLSH,
+`endif
+
+`ifdef COMMS_INTERFACE
+    input wire upl0_in,
+    input wire upl1_in,
+    input wire dkstrt_in,
+    input wire dkend_in,
+    input wire dkbsnc_in,
+
+    output wire DKDATA,
+`endif
+
 `ifdef CDU_INTERFACE
     input wire cduxm_in,
     input wire cduxp_in,
@@ -93,7 +139,6 @@ agc_clk_div agc_div(
 /*******************************************************************************.
 * Monitor                                                                       *
 '*******************************************************************************/
-
 wire MSTRT;
 wire MSTP;
 wire NHALGA;
@@ -457,8 +502,8 @@ wire TRNP; //input
 reg TRST10 = 0; //input
 reg TRST9 = 0; //input
 reg ULLTHR = 0; //input
-reg UPL0 = 0; //input
-reg UPL1 = 0; //input
+wire UPL0; //input
+wire UPL1; //input
 reg VFAIL = 0;
 reg XLNK0 = 0; //input
 reg XLNK1 = 0; //input
@@ -467,35 +512,10 @@ reg n2FSFAL = 1;
 wire n3200A_agc; // output
 wire n3200B_agc; // output
 wire CLK; //output
-wire COMACT; //output
-wire DKDATA; //output
-wire ELSNCM; //output
 wire ELSNCN; //output
-wire KYRLS; //output
-wire OPEROR; //output
 wire PIPASW; //output
 wire PIPDAT; //output
-wire RESTRT; //output
-wire RLYB01; //output
-wire RLYB02; //output
-wire RLYB03; //output
-wire RLYB04; //output
-wire RLYB05; //output
-wire RLYB06; //output
-wire RLYB07; //output
-wire RLYB08; //output
-wire RLYB09; //output
-wire RLYB10; //output
-wire RLYB11; //output
-wire RYWD12; //output
-wire RYWD13; //output
-wire RYWD14; //output
-wire RYWD16; //output
-wire SBYLIT; //output
 wire SBYREL_n;
-wire TMPCAU; //output
-wire UPLACT; //output
-wire VNFLSH; //output
 
 
 // B8 CLOCK output
@@ -522,29 +542,123 @@ assign PIPAYp = PIPDAT && (moding_counter < 3'd3);
 assign PIPAZp = PIPDAT && (moding_counter < 3'd3);
 
 /*******************************************************************************.
+* DSKY Interface                                                                *
+'*******************************************************************************/
+`ifdef DSKY_INTERFACE
+debounce #(1, 10) db0(prop_clk, rst_n, mainrs_in, MAINRS);
+debounce #(1, 10) db1(prop_clk, rst_n, mkey1_in, MKEY1);
+debounce #(1, 10) db2(prop_clk, rst_n, mkey2_in, MKEY2);
+debounce #(1, 10) db3(prop_clk, rst_n, mkey3_in, MKEY3);
+debounce #(1, 10) db4(prop_clk, rst_n, mkey4_in, MKEY4);
+debounce #(1, 10) db5(prop_clk, rst_n, mkey5_in, MKEY5);
+debounce #(1, 10) db6(prop_clk, rst_n, caurst_in, CAURST);
+debounce #(1, 10) db7(prop_clk, rst_n, sbybut_in, SBYBUT);
+`else
+assign MAINRS = 1;
+assign MKEY1 = 0;
+assign MKEY2 = 0;
+assign MKEY3 = 0;
+assign MKEY4 = 0;
+assign MKEY5 = 0;
+assign CAURST = 0;
+assign SBYBUT = 0;
+wire RLYB01;
+wire RLYB02;
+wire RLYB03;
+wire RLYB04;
+wire RLYB05;
+wire RLYB06;
+wire RLYB07;
+wire RLYB08;
+wire RLYB09;
+wire RLYB10;
+wire RLYB11;
+wire RYWD12;
+wire RYWD13;
+wire RYWD14;
+wire RYWD16;
+wire COMACT;
+wire ELSNCM;
+wire KYRLS;
+wire OPEROR;
+wire RESTRT;
+wire SBYLIT;
+wire TMPCAU;
+wire UPLACT;
+wire VNFLSH;
+`endif
+
+/*******************************************************************************.
+* Comms Interface                                                               *
+'*******************************************************************************/
+`ifdef COMMS_INTERFACE
+debounce #(1, 10) db8(prop_clk, rst_n, upl0_in, UPL0);
+debounce #(1, 10) db9(prop_clk, rst_n, upl1_in, UPL1);
+debounce #(1, 10) db10(prop_clk, rst_n, dkstrt_in, DKSTRT);
+debounce #(1, 10) db11(prop_clk, rst_n, dkend_in, DKEND);
+debounce #(1, 10) db12(prop_clk, rst_n, dkbsnc_in, DKBSNC);
+`else
+// We're not connected to a real PCM, so simulate one to get telemetry flowing
+reg clk_p;
+reg [9:0] pcm_timer;
+reg [4:0] pcm_pulse_timer;
+reg [5:0] pcm_bit;
+always @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
+        clk_p <= 1'b0;
+        pcm_timer <= 15'd1023;
+        pcm_pulse_timer <= 5'd0;
+        pcm_bit <= 6'd42;
+    end else begin
+        clk_p <= CLK;
+        if (~clk_p && CLK) begin
+            if (pcm_pulse_timer < 5'd19) begin
+                pcm_pulse_timer <= pcm_pulse_timer + 5'd1;
+            end else begin
+                pcm_pulse_timer <= 5'd0;
+                pcm_timer <= pcm_timer + 10'd1;
+                if (pcm_timer == 10'd0) begin
+                    pcm_bit <= 6'd0;
+                end else if (pcm_bit < 6'd42) begin
+                    pcm_bit <= pcm_bit + 6'd1;
+                end
+            end
+        end
+    end
+end
+
+assign DKSTRT = (pcm_pulse_timer < 5'd5) && (pcm_bit == 6'd0);
+assign DKBSNC = (pcm_pulse_timer < 5'd5) && (pcm_bit > 6'd0) && (pcm_bit < 6'd41);
+assign DKEND  = (pcm_pulse_timer < 5'd5) && (pcm_bit == 6'd41);
+assign UPL0 = 0;
+assign UPL1 = 0;
+wire DKDATA;
+`endif
+
+/*******************************************************************************.
 * CDU Interface                                                                 *
 '*******************************************************************************/
 `ifdef CDU_INTERFACE
-debounce #(1, 10) db1(prop_clk, rst_n, cduxm_in, CDUXM);
-debounce #(1, 10) db2(prop_clk, rst_n, cduxp_in, CDUXP);
-debounce #(1, 10) db3(prop_clk, rst_n, cduym_in, CDUYM);
-debounce #(1, 10) db4(prop_clk, rst_n, cduyp_in, CDUYP);
-debounce #(1, 10) db5(prop_clk, rst_n, cduzm_in, CDUZM);
-debounce #(1, 10) db6(prop_clk, rst_n, cduzp_in, CDUZP);
-debounce #(1, 10) db7(prop_clk, rst_n, shaftm_in, SHAFTM);
-debounce #(1, 10) db8(prop_clk, rst_n, shaftp_in, SHAFTP);
-debounce #(1, 10) db9(prop_clk, rst_n, trnm_in, TRNM);
-debounce #(1, 10) db10(prop_clk, rst_n, trnp_in, TRNP);
-debounce #(1, 10) db11(prop_clk, rst_n, cdufal_in, CDUFAL);
-debounce #(1, 10) db12(prop_clk, rst_n, opcdfl_in, OPCDFL);
-debounce #(1, 10) db13(prop_clk, rst_n, gcapcl_in, GCAPCL);
-debounce #(1, 10) db14(prop_clk, rst_n, ctlsat_in, CTLSAT);
-debounce #(1, 10) db15(prop_clk, rst_n, imuopr_in, IMUOPR);
-debounce #(1, 10) db16(prop_clk, rst_n, imufal_in, IMUFAL);
-debounce #(1, 10) db17(prop_clk, rst_n, imucag_in, IMUCAG);
-debounce #(1, 10) db18(prop_clk, rst_n, tempin_in, TEMPIN);
-debounce #(1, 10) db19(prop_clk, rst_n, isstor_in, ISSTOR);
-debounce #(1, 10) db20(prop_clk, rst_n, rrpona_in, RRPONA);
+debounce #(1, 10) db13(prop_clk, rst_n, cduxm_in, CDUXM);
+debounce #(1, 10) db14(prop_clk, rst_n, cduxp_in, CDUXP);
+debounce #(1, 10) db15(prop_clk, rst_n, cduym_in, CDUYM);
+debounce #(1, 10) db16(prop_clk, rst_n, cduyp_in, CDUYP);
+debounce #(1, 10) db17(prop_clk, rst_n, cduzm_in, CDUZM);
+debounce #(1, 10) db18(prop_clk, rst_n, cduzp_in, CDUZP);
+debounce #(1, 10) db19(prop_clk, rst_n, shaftm_in, SHAFTM);
+debounce #(1, 10) db20(prop_clk, rst_n, shaftp_in, SHAFTP);
+debounce #(1, 10) db21(prop_clk, rst_n, trnm_in, TRNM);
+debounce #(1, 10) db22(prop_clk, rst_n, trnp_in, TRNP);
+debounce #(1, 10) db23(prop_clk, rst_n, cdufal_in, CDUFAL);
+debounce #(1, 10) db24(prop_clk, rst_n, opcdfl_in, OPCDFL);
+debounce #(1, 10) db25(prop_clk, rst_n, gcapcl_in, GCAPCL);
+debounce #(1, 10) db26(prop_clk, rst_n, ctlsat_in, CTLSAT);
+debounce #(1, 10) db27(prop_clk, rst_n, imuopr_in, IMUOPR);
+debounce #(1, 10) db28(prop_clk, rst_n, imufal_in, IMUFAL);
+debounce #(1, 10) db29(prop_clk, rst_n, imucag_in, IMUCAG);
+debounce #(1, 10) db30(prop_clk, rst_n, tempin_in, TEMPIN);
+debounce #(1, 10) db31(prop_clk, rst_n, isstor_in, ISSTOR);
+debounce #(1, 10) db32(prop_clk, rst_n, rrpona_in, RRPONA);
 `else
 assign CDUXM = 0;
 assign CDUXP = 0;
@@ -592,39 +706,6 @@ wire S4BTAK;
 wire ISSTDC;
 `endif
 
-// PCM simulation
-reg clk_p;
-reg [9:0] pcm_timer;
-reg [4:0] pcm_pulse_timer;
-reg [5:0] pcm_bit;
-always @(posedge clk or negedge rst_n) begin
-    if (~rst_n) begin
-        clk_p <= 1'b0;
-        pcm_timer <= 15'd1023;
-        pcm_pulse_timer <= 5'd0;
-        pcm_bit <= 6'd42;
-    end else begin
-        clk_p <= CLK;
-        if (~clk_p && CLK) begin
-            if (pcm_pulse_timer < 5'd19) begin
-                pcm_pulse_timer <= pcm_pulse_timer + 5'd1;
-            end else begin
-                pcm_pulse_timer <= 5'd0;
-                pcm_timer <= pcm_timer + 10'd1;
-                if (pcm_timer == 10'd0) begin
-                    pcm_bit <= 6'd0;
-                end else if (pcm_bit < 6'd42) begin
-                    pcm_bit <= pcm_bit + 6'd1;
-                end
-            end
-        end
-    end
-end
-
-assign DKSTRT = (pcm_pulse_timer < 5'd4) && (pcm_bit == 6'd0);
-assign DKBSNC = (pcm_pulse_timer < 5'd4) && (pcm_bit > 6'd0) && (pcm_bit < 6'd41);
-assign DKEND  = (pcm_pulse_timer < 5'd4) && (pcm_bit == 6'd41);
-
 // STRT2 handling
 reg STRT2;
 reg [18:0] strt2_count;
@@ -650,7 +731,6 @@ assign IN3214 = SBYBUT;
 
 // AGC
 fpga_agc agc(p4VDC, p4VSW, GND, ~rst_n, prop_clk, BLKUPL_n, BMGXM, BMGXP, BMGYM, BMGYP, BMGZM, BMGZP, CAURST, CDUFAL, CDUXM, CDUXP, CDUYM, CDUYP, CDUZM, CDUZP, CLOCK, CTLSAT, DBLTST, DKBSNC, DKEND, DKSTRT, DOSCAL, FLTOUT, FREFUN, GATEX_n, GATEY_n, GATEZ_n, GCAPCL, GUIREL, HOLFUN, IMUCAG, IMUFAL, IMUOPR, IN3008, IN3212, IN3213, IN3214, IN3216, IN3301, ISSTOR, LEMATT, LFTOFF, LRIN0, LRIN1, LRRLSC, LVDAGD, MAINRS, MAMU, MANmP, MANmR, MANmY, MANpP, MANpR, MANpY, MARK, MDT01, MDT02, MDT03, MDT04, MDT05, MDT06, MDT07, MDT08, MDT09, MDT10, MDT11, MDT12, MDT13, MDT14, MDT15, MDT16, MKEY1, MKEY2, MKEY3, MKEY4, MKEY5, MLDCH, MLOAD, MNHNC, MNHRPT, MNHSBF, MNIMmP, MNIMmR, MNIMmY, MNIMpP, MNIMpR, MNIMpY, MONPAR, MONWBK, MRDCH, MREAD, MRKREJ, MRKRST, MSTP, MSTRT, MTCSAI, MYCLMP, NAVRST, NHALGA, NHVFAL, NKEY1, NKEY2, NKEY3, NKEY4, NKEY5, OPCDFL, OPMSW2, OPMSW3, PCHGOF, PIPAXm, PIPAXp, PIPAYm, PIPAYp, PIPAZm, PIPAZp, ROLGOF, RRIN0, RRIN1, RRPONA, RRRLSC, S4BSAB, SBYBUT, SCAFAL, SHAFTM, SHAFTP, SIGNX, SIGNY, SIGNZ, SMSEPR, SPSRDY, STRPRS, STRT2, TEMPIN, TRANmX, TRANmY, TRANmZ, TRANpX, TRANpY, TRANpZ, TRNM, TRNP, TRST10, TRST9, ULLTHR, UPL0, UPL1, VFAIL, XLNK0, XLNK1, ZEROP, n2FSFAL, n25KPPS, n3200A_agc, n3200B_agc, n800RST, n800SET, CDUCLK, CDUXDM, CDUXDP, CDUYDM, CDUYDP, CDUZDM, CDUZDP, CLK, COARSE, COMACT, DKDATA, ELSNCM, ELSNCN, ENERIM, ENEROP, ISSTDC, KYRLS, MBR1, MBR2, MCTRAL_n, MGOJAM, MGP_n, MIIP, MINHL, MINKL, MNISQ, MON800, MONWT, MOSCAL_n, MPAL_n, MPIPAL_n, MRAG, MRCH, MREQIN, MRGG, MRLG, MRPTAL_n, MRSC, MRULOG, MSCAFL_n, MSCDBL_n, MSP, MSQ10, MSQ11, MSQ12, MSQ13, MSQ14, MSQ16, MSQEXT, MST1, MST2, MST3, MSTPIT_n, MT01, MT02, MT03, MT04, MT05, MT06, MT07, MT08, MT09, MT10, MT11, MT12, MTCAL_n, MTCSA_n, MVFAIL_n, MWAG, MWARNF_n, MWATCH_n, MWBBEG, MWBG, MWCH, MWEBG, MWFBG, MWG, MWL01, MWL02, MWL03, MWL04, MWL05, MWL06, MWL07, MWL08, MWL09, MWL10, MWL11, MWL12, MWL13, MWL14, MWL15, MWL16, MWLG, MWQG, MWSG, MWYG, MWZG, OPEROR, OUTCOM, PIPASW, PIPDAT, RESTRT, RLYB01, RLYB02, RLYB03, RLYB04, RLYB05, RLYB06, RLYB07, RLYB08, RLYB09, RLYB10, RLYB11, RYWD12, RYWD13, RYWD14, RYWD16, S4BTAK, SBYLIT, SBYREL_n, SHFTDM, SHFTDP, TMPCAU, TRNDM, TRNDP, TVCNAB, UPLACT, VNFLSH, ZIMCDU, ZOPCDU);
-
 
 assign led0 = COMACT;
 

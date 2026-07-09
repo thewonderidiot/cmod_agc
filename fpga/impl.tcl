@@ -11,6 +11,12 @@ read_xdc $constr_dir/cmod_agc.xdc
 if {$build_type in {CDU}} {
     read_xdc $constr_dir/cdu.xdc
 }
+if {$build_type in {DSKY DSKY_COMMS}} {
+    read_xdc $constr_dir/dsky.xdc
+}
+if {$build_type in {DSKY_COMMS}} {
+    read_xdc $constr_dir/comms.xdc
+}
 
 #################################################
 # Implementation

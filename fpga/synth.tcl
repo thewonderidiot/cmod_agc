@@ -23,6 +23,12 @@ set_property verilog_define {TARGET_FPGA=1} [current_fileset]
 if {$build_type in {CDU}} {
     set_property verilog_define {CDU_INTERFACE=1} [current_fileset]
 }
+if {$build_type in {DSKY DSKY_COMMS}} {
+    set_property verilog_define {DSKY_INTERFACE=1} [current_fileset]
+} 
+if {$build_type in {DSKY_COMMS}} {
+    set_property verilog_define {COMMS_INTERFACE=1} [current_fileset]
+} 
 
 #################################################
 # IP creation

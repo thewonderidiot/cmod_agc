@@ -16,6 +16,8 @@ To build the FPGA, first source the Vivado settings for your installation, then 
 Supported `BUILD_TYPE`s:
 * `AGC` - Standard build with no additional I/O.
 * `CDU` - All interfaces required to drive the CDU and PSA.
+* `DSKY` - All signals required to interface with a real DSKY.
+* `DSKY_COMMS` - `DSKY` plus I/O for interfacing with a UDL and a PCM.
 
 ```
 source /opt/Xilinx/Vivado/2024.1/settings64.sh

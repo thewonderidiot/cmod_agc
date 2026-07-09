@@ -125,15 +125,6 @@ class CDUControl(QWidget):
             angles_layout.addWidget(text, row+1, col+1, 1, 1, Qt.AlignLeft)
             self._angle_texts.append(text)
 
-        self.show()
-
     def _connected(self, connected):
         if connected:
             self.phasing.setPhase(0)
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = CDUControl(None)
-    window.show()
-    app.exec()
-

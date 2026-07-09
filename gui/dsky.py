@@ -301,10 +301,3 @@ class DSKY(QWidget):
             but.press()
         else:
             but.release()
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = DSKY(None)
-    window.show()
-    app.exec()
-

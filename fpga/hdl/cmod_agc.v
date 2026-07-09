@@ -1,25 +1,5 @@
 `timescale 1ns / 1ps
 `default_nettype none
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 03/17/2024 09:46:12 AM
-// Design Name: 
-// Module Name: cmod_agc
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module cmod_agc(
     input wire clk,
@@ -28,20 +8,12 @@ module cmod_agc(
     input wire rxd,
     output wire txd,
     
-    output wire led0,
-
     input wire a15_p,
     input wire a15_n,
     input wire a16_p,
     input wire a16_n,
 
-    output wire n25KPPS,
-    output wire n3200A,
-    output wire n3200B,
-    output wire n800SET,
-    output wire n800RST,
-    output wire CDUCLK,
-
+`ifdef CDU_INTERFACE
     input wire cduxm_in,
     input wire cduxp_in,
     input wire cduym_in,
@@ -52,18 +24,6 @@ module cmod_agc(
     input wire shaftp_in,
     input wire trnm_in,
     input wire trnp_in,
-
-    output wire CDUXDM,
-    output wire CDUXDP,
-    output wire CDUYDM,
-    output wire CDUYDP,
-    output wire CDUZDM,
-    output wire CDUZDP,
-    output wire SHFTDM,
-    output wire SHFTDP,
-    output wire TRNDM,
-    output wire TRNDP,
-
     input wire cdufal_in,
     input wire opcdfl_in,
     input wire gcapcl_in,
@@ -75,6 +35,22 @@ module cmod_agc(
     input wire isstor_in,
     input wire rrpona_in,
 
+    output wire n25KPPS,
+    output wire n3200A,
+    output wire n3200B,
+    output wire n800SET,
+    output wire n800RST,
+    output wire CDUCLK,
+    output wire CDUXDM,
+    output wire CDUXDP,
+    output wire CDUYDM,
+    output wire CDUYDP,
+    output wire CDUZDM,
+    output wire CDUZDP,
+    output wire SHFTDM,
+    output wire SHFTDP,
+    output wire TRNDM,
+    output wire TRNDP,
     output wire COARSE,
     output wire ENERIM,
     output wire ENEROP,
@@ -82,7 +58,10 @@ module cmod_agc(
     output wire ZOPCDU,
     output wire TVCNAB,
     output wire S4BTAK,
-    output wire ISSTDC
+    output wire ISSTDC,
+`endif
+
+    output wire led0
 );
 
 wire rst_n;
@@ -109,6 +88,7 @@ agc_clk_div agc_div(
     .rst_n(rst_n),
     .agc_clk(agc_clk)
 );
+
 
 /*******************************************************************************.
 * Monitor                                                                       *
@@ -541,6 +521,77 @@ assign PIPAXp = PIPDAT && (moding_counter < 3'd3);
 assign PIPAYp = PIPDAT && (moding_counter < 3'd3);
 assign PIPAZp = PIPDAT && (moding_counter < 3'd3);
 
+/*******************************************************************************.
+* CDU Interface                                                                 *
+'*******************************************************************************/
+`ifdef CDU_INTERFACE
+debounce #(1, 10) db1(prop_clk, rst_n, cduxm_in, CDUXM);
+debounce #(1, 10) db2(prop_clk, rst_n, cduxp_in, CDUXP);
+debounce #(1, 10) db3(prop_clk, rst_n, cduym_in, CDUYM);
+debounce #(1, 10) db4(prop_clk, rst_n, cduyp_in, CDUYP);
+debounce #(1, 10) db5(prop_clk, rst_n, cduzm_in, CDUZM);
+debounce #(1, 10) db6(prop_clk, rst_n, cduzp_in, CDUZP);
+debounce #(1, 10) db7(prop_clk, rst_n, shaftm_in, SHAFTM);
+debounce #(1, 10) db8(prop_clk, rst_n, shaftp_in, SHAFTP);
+debounce #(1, 10) db9(prop_clk, rst_n, trnm_in, TRNM);
+debounce #(1, 10) db10(prop_clk, rst_n, trnp_in, TRNP);
+debounce #(1, 10) db11(prop_clk, rst_n, cdufal_in, CDUFAL);
+debounce #(1, 10) db12(prop_clk, rst_n, opcdfl_in, OPCDFL);
+debounce #(1, 10) db13(prop_clk, rst_n, gcapcl_in, GCAPCL);
+debounce #(1, 10) db14(prop_clk, rst_n, ctlsat_in, CTLSAT);
+debounce #(1, 10) db15(prop_clk, rst_n, imuopr_in, IMUOPR);
+debounce #(1, 10) db16(prop_clk, rst_n, imufal_in, IMUFAL);
+debounce #(1, 10) db17(prop_clk, rst_n, imucag_in, IMUCAG);
+debounce #(1, 10) db18(prop_clk, rst_n, tempin_in, TEMPIN);
+debounce #(1, 10) db19(prop_clk, rst_n, isstor_in, ISSTOR);
+debounce #(1, 10) db20(prop_clk, rst_n, rrpona_in, RRPONA);
+`else
+assign CDUXM = 0;
+assign CDUXP = 0;
+assign CDUYM = 0;
+assign CDUYP = 0;
+assign CDUZM = 0;
+assign CDUZP = 0;
+assign SHAFTM = 0;
+assign SHAFTP = 0;
+assign TRNM = 0;
+assign TRNP = 0;
+assign CDUFAL = 0;
+assign OPCDFL = 0;
+assign GCAPCL = 0;
+assign CTLSAT = 0;
+assign IMUOPR = 0;
+assign IMUFAL = 0;
+assign IMUCAG = 0;
+assign TEMPIN = 1;
+assign ISSTOR = 0;
+assign RRPONA = 0;
+wire n25KPPS;
+wire n3200A;
+wire n3200B;
+wire n800SET;
+wire n800RST;
+wire CDUCLK;
+wire CDUXDM;
+wire CDUXDP;
+wire CDUYDM;
+wire CDUYDP;
+wire CDUZDM;
+wire CDUZDP;
+wire SHFTDM;
+wire SHFTDP;
+wire TRNDM;
+wire TRNDP;
+wire COARSE;
+wire ENERIM;
+wire ENEROP;
+wire ZIMCDU;
+wire ZOPCDU;
+wire TVCNAB;
+wire S4BTAK;
+wire ISSTDC;
+`endif
+
 // PCM simulation
 reg clk_p;
 reg [9:0] pcm_timer;
@@ -594,27 +645,6 @@ always @(posedge prop_clk or negedge rst_n) begin
         end
     end
 end
-
-debounce #(1, 10) db1(prop_clk, rst_n, cduxm_in, CDUXM);
-debounce #(1, 10) db2(prop_clk, rst_n, cduxp_in, CDUXP);
-debounce #(1, 10) db3(prop_clk, rst_n, cduym_in, CDUYM);
-debounce #(1, 10) db4(prop_clk, rst_n, cduyp_in, CDUYP);
-debounce #(1, 10) db5(prop_clk, rst_n, cduzm_in, CDUZM);
-debounce #(1, 10) db6(prop_clk, rst_n, cduzp_in, CDUZP);
-debounce #(1, 10) db7(prop_clk, rst_n, shaftm_in, SHAFTM);
-debounce #(1, 10) db8(prop_clk, rst_n, shaftp_in, SHAFTP);
-debounce #(1, 10) db9(prop_clk, rst_n, trnm_in, TRNM);
-debounce #(1, 10) db10(prop_clk, rst_n, trnp_in, TRNP);
-debounce #(1, 10) db11(prop_clk, rst_n, cdufal_in, CDUFAL);
-debounce #(1, 10) db12(prop_clk, rst_n, opcdfl_in, OPCDFL);
-debounce #(1, 10) db13(prop_clk, rst_n, gcapcl_in, GCAPCL);
-debounce #(1, 10) db14(prop_clk, rst_n, ctlsat_in, CTLSAT);
-debounce #(1, 10) db15(prop_clk, rst_n, imuopr_in, IMUOPR);
-debounce #(1, 10) db16(prop_clk, rst_n, imufal_in, IMUFAL);
-debounce #(1, 10) db17(prop_clk, rst_n, imucag_in, IMUCAG);
-debounce #(1, 10) db18(prop_clk, rst_n, tempin_in, TEMPIN);
-debounce #(1, 10) db19(prop_clk, rst_n, isstor_in, ISSTOR);
-debounce #(1, 10) db20(prop_clk, rst_n, rrpona_in, RRPONA);
 
 assign IN3214 = SBYBUT;
 

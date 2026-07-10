@@ -600,31 +600,24 @@ debounce #(1, 10) db12(prop_clk, rst_n, dkbsnc_in, DKBSNC);
 `else
 // We're not connected to a real PCM, so simulate one to get telemetry flowing
 reg [9:0] pcm_timer;
-reg [5:0] pcm_pulse_timer;
-reg [5:0] pcm_bit;
-always @(posedge agc_clk or negedge rst_n) begin
+reg [9:0] pcm_bit;
+always @(posedge prop_clk or negedge rst_n) begin
     if (~rst_n) begin
-        pcm_timer <= 15'd1023;
-        pcm_pulse_timer <= 5'd0;
-        pcm_bit <= 6'd42;
+        pcm_timer <= 10'd0;
+        pcm_bit <= 10'd0;
     end else begin
-        if (pcm_pulse_timer < 6'd39) begin
-            pcm_pulse_timer <= pcm_pulse_timer + 6'd1;
-        end else begin
-            pcm_pulse_timer <= 5'd0;
+        if (pcm_timer < 10'd999) begin
             pcm_timer <= pcm_timer + 10'd1;
-            if (pcm_timer == 10'd0) begin
-                pcm_bit <= 6'd0;
-            end else if (pcm_bit < 6'd42) begin
-                pcm_bit <= pcm_bit + 6'd1;
-            end
+        end else begin
+            pcm_timer <= 10'd0;
+            pcm_bit <= pcm_bit + 10'd1;
         end
     end
 end
 
-assign DKSTRT = (pcm_pulse_timer < 6'd10) && (pcm_bit == 6'd0);
-assign DKBSNC = (pcm_pulse_timer < 6'd10) && (pcm_bit > 6'd0) && (pcm_bit < 6'd41);
-assign DKEND  = (pcm_pulse_timer < 6'd10) && (pcm_bit == 6'd41);
+assign DKSTRT = (pcm_timer < 10'd205) && (pcm_bit == 10'd0);
+assign DKBSNC = (pcm_timer < 10'd205) && (pcm_bit > 10'd0) && (pcm_bit < 10'd41);
+assign DKEND  = (pcm_timer < 10'd205) && (pcm_bit == 10'd41);
 assign UPL0 = 0;
 assign UPL1 = 0;
 wire DKDATA;

@@ -8,16 +8,16 @@ Due to BRAM limitations, some concessions had to be made. Queues are generally s
 
 Requirements:
 * [AMD Vivado](https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/vivado.html) 
-* [openFPGALoader](https://github.com/trabucayre/openFPGALoader).
+* [openFPGALoader](https://github.com/trabucayre/openFPGALoader)
 
 
 To build the FPGA, first source the Vivado settings for your installation, then run `make`. If interfacing with external hardware, the build type can optionally be specified with the `BUILD_TYPE` make variable. 
 
 Supported `BUILD_TYPE`s:
 * `AGC` - Standard build with no additional I/O.
-* `CDU` - All interfaces required to drive the CDU and PSA.
-* `DSKY` - All signals required to interface with a real DSKY.
-* `DSKY_COMMS` - `DSKY` plus I/O for interfacing with a UDL and a PCM.
+* `CDU` - I/O to interface with the CDU and PSA.
+* `DSKY` - I/O to interface with the DSKY.
+* `DSKY_COMMS` - `DSKY` plus I/O to interface with the UDL and PCM.
 
 ```
 source /opt/Xilinx/Vivado/2024.1/settings64.sh

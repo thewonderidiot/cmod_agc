@@ -55,17 +55,17 @@ class MonitorPanel(QFrame):
         regs_layout.addWidget(self._reg_a)
         regs_layout.setAlignment(self._reg_a, Qt.AlignRight)
 
-        self._reg_l = Register(regs, self._usbif, 'L', False, QColor(0,255,0))
-        regs_layout.addWidget(self._reg_l)
-        regs_layout.setAlignment(self._reg_l, Qt.AlignRight)
+        self._reg_z = Register(regs, self._usbif, 'Z', False, QColor(0,255,0))
+        regs_layout.addWidget(self._reg_z)
+        regs_layout.setAlignment(self._reg_z, Qt.AlignRight)
 
         # self._reg_q = Register(regs, self._usbif, 'Q', False, QColor(0,255,0))
         # regs_layout.addWidget(self._reg_q)
         # regs_layout.setAlignment(self._reg_q, Qt.AlignRight)
 
-        self._reg_z = Register(regs, self._usbif, 'Z', False, QColor(0,255,0))
-        regs_layout.addWidget(self._reg_z)
-        regs_layout.setAlignment(self._reg_z, Qt.AlignRight)
+        self._reg_l = Register(regs, self._usbif, 'L', False, QColor(0,255,0))
+        regs_layout.addWidget(self._reg_l)
+        regs_layout.setAlignment(self._reg_l, Qt.AlignRight)
 
         # self._reg_b = Register(regs, self._usbif, 'B', False, QColor(0,255,0))
         # regs_layout.addWidget(self._reg_b)

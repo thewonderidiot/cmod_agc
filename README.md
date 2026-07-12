@@ -28,3 +28,9 @@ Once built, the bitstream can be loaded onto the board by running:
 ```
 make load
 ```
+
+## Running
+
+The monitor GUI can be launched by running `./agc_monitor.py` in the `gui` directory. Python dependencies include:
+* QtPy
+* A backing python qt library (PySide2, PyQt6, etc.)
